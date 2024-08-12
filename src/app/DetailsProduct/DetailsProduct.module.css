@@ -1,0 +1,127 @@
+.box_padding {
+  /* padding: var(--margin) 1.25rem; */
+  padding-top: var(--margin);
+  height: 100vh;
+}
+.container {
+  background-color: #fff;
+  padding: 0.875rem 2.188rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.75rem 2.088rem rgba(0, 0, 0, 25%);
+  /* margin-top: var(--margin); */
+  /* height: 90%; */
+}
+.listInfo {
+  flex: 1;
+  margin-top: 0.625rem;
+  padding: 0 1.875rem;
+}
+.listInfoOn {
+  height: auto;
+}
+
+.listInfoOff {
+  overflow: hidden;
+  height: 0;
+}
+.box_flex {
+  display: flex;
+  padding: 1.25rem 5rem;
+  margin-bottom: 1.188rem;
+}
+.head {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  gap: 1.25rem;
+  /* margin-bottom: 0.625rem; */
+}
+.backBtn {
+  box-shadow: 0 0.25rem 1.463rem rgba(0, 0, 0, 25%);
+  padding: 0.625rem 0.625rem 0.313rem 0.625rem;
+  border-radius: 0.25rem;
+}
+.backImg {
+  width: auto;
+  height: auto;
+}
+.head h1 {
+  font-size: 1.375rem;
+  /* font-weight: 400; */
+}
+.head p {
+  cursor: pointer;
+  color: #4673fe;
+  /* font-size: 1px; */
+  font-weight: 600;
+}
+.box_img {
+  /* display: flex;
+  justify-content: center; */
+  width: 40%;
+}
+.img {
+  width: 100%;
+  height: auto;
+  margin-top: 0.875rem;
+}
+.box_btn {
+  display: flex;
+  justify-content: flex-end;
+}
+.btn {
+  /* margin: 0.625rem 0; */
+  transform: translateY(-100%);
+  color: #fff;
+  font-size: 0.875rem;
+  background: rgb(173, 210, 148);
+  background: linear-gradient(
+    169deg,
+    rgba(173, 210, 148, 1) 0%,
+    rgba(97, 175, 43, 1) 87%
+  );
+  margin-right: 1.875rem;
+}
+@media (max-width: 739px) {
+  .box_flex {
+    flex-direction: column-reverse;
+    padding: 0 0;
+    gap: var(--margin);
+    margin-bottom: 0;
+  }
+  .container {
+    padding: 1.25rem 1.25rem;
+    border-radius: 0.25rem;
+  }
+  .box_btn {
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn {
+    margin-right: 0;
+  }
+  /* 
+  * {
+    font-size: 0.875rem;
+  } */
+  .box_img {
+    /* display: flex;
+    justify-content: center; */
+    width: 100%;
+  }
+  .btn {
+    margin: 0.625rem 0;
+    transform: translateY(0);
+  }
+}
+@media (min-width: 740px) and (max-width: 1023px) {
+  .btn {
+    margin: 0.625rem 0;
+    transform: translateY(0);
+  }
+  .box_btn {
+    display: flex;
+    justify-content: center;
+  }
+}
