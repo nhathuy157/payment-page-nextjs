@@ -1,16 +1,17 @@
 // middleware.ts
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(request: Request) {
-    // debugger;
-  // Lấy thông tin từ yêu cầu
-  const url = new URL(request.url);
-  // console.log('Current URL:', url.href);
+export function middleware(request: NextRequest) {
+  request.nextUrl.searchParams.append('customParam', 'customValue');
+  // Add a custom query parameter
+  const url = request.nextUrl.clone();
+  // url.searchParams.set('myCustomParam', 'myValue');
+  // request.headers.set('URL', url.href);
 
-  // Thay đổi phản hồi hoặc thực hiện các hành động khác
+  // return NextResponse.rewrite(url);
   const response = NextResponse.next();
 //   response.headers.set('X-Custom-Header', 'Middleware Header');debugger;
-  response.headers.set('URL', url.href);
+  response.headers.set('URL', url.href);  
   return response;
 }
 

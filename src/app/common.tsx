@@ -8,4 +8,17 @@ async function getOrder(order_hash: string){
     return res_json;
 }
 
+declare global {
+    interface Window {
+      detailsInfo: any;
+    }
+  }
+
+function toVND(number: number) {
+    return number.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+}
+
 export default getOrder;

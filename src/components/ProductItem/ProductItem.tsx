@@ -8,13 +8,13 @@ export default function ProductItem(props: any) {
       // href={
       //   "/DetailsProduct" + window.location.search + "&index=" + props.index
       // }
-      href={"/DetailsProduct"}
+      href={"/DetailsProduct" + window.location.search + "&index=" + props.index}
       className={`${classes.container}`}
     >
       <div className={classes.inf}>
         <div className={classes.box_img}>
           <Image
-            src={props.content.image || '/Product.png'}
+            src={props.content.image || '/no-pictures.png'}
             alt="error"
             width={372}
             height={288}
