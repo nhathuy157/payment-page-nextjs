@@ -38,7 +38,7 @@ export async function generateMetadata(){
 // Hàm async để lấy dữ liệu từ máy chủ
 export default function Page() {
   return (
-    <Script>
+    <Script id='my-script'>
       {`window.location.pathname = '/'`}
     </Script>
   );
