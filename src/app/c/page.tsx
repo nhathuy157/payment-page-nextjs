@@ -18,16 +18,18 @@ export async function generateMetadata(){
   catch(err: any){
     return meta;
   }
+
+  const imageProduct = data.data.image || "/no-pictures.png";
   // Tạo meta ở đây
   return {
-    title: data.data.code,
-    description: data.data.code,
+    title: "Thông tin đơn hàng " + data.data.code,
+    description: "Kiểm tra chi tiết đơn hàng của bạn bao gồm thông tin sản phẩm, số lượng, giá cả và trạng thái giao hàng. Đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.",
     openGraph: {
       title: data.data.code,
       description: data.data.code,
       images: [
         {
-          url: data.data.code,
+          url: imageProduct,
           alt: data.data.code,
         }
       ]
