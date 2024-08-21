@@ -316,15 +316,16 @@ useEffect(() => {
     // Dọn dẹp interval khi component bị unmount
     return () => clearInterval(intervalId);
 }, [isChecking]); //Chạy lại effect nếu isChecking thay đổi
-
-if (loading || typeof window == 'undefined') {
-  return <div>Loading...</div>;
-}
-  // Kiểm tra domain xem user truy cập từ brand nào
-  const ref = (window.location?.host.match(/\w+\.(\w+)\.vn/) || [])[1];
+const ref = (window.location?.host.match(/\w+\.(\w+)\.vn/) || [])[1];
   const BankInfo = (dataRef[ref] || dataRef.default).bank;
   const imgTks = (dataRef[ref] || dataRef.default).imgTks;
   const urlMain = (dataRef[ref] || dataRef.default).url;
+
+if (loading || typeof window == 'undefined') {
+  window.location.href = `${urlMain}`;
+}
+  // Kiểm tra domain xem user truy cập từ brand nào
+  
 if (!searchParams.order_hash) window.location.href = `${urlMain}`;
 
 if (error) {
