@@ -320,9 +320,9 @@ const ref = (window.location?.host.match(/\w+\.(\w+)\.vn/) || [])[1];
   const BankInfo = (dataRef[ref] || dataRef.default).bank;
   const imgTks = (dataRef[ref] || dataRef.default).imgTks;
   const urlMain = (dataRef[ref] || dataRef.default).url;
-
+  
 if (loading || typeof window == 'undefined') {
-  window.location.href = `${urlMain}`;
+  return <div>Loading...</div>;
 }
   // Kiểm tra domain xem user truy cập từ brand nào
   
