@@ -270,6 +270,7 @@ useEffect(() => {
 
 useEffect(() => {
   if (detailsInfo) {
+      
     document.title = "Thông tin đơn hàng " + detailsInfo.data?.code;
     window.detailsInfo = detailsInfo;
   }
