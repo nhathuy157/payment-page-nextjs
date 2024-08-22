@@ -19,17 +19,18 @@ export async function generateMetadata(){
     return meta;
   }
 
-  const imageProduct = data.data.image || "/no-pictures.png";
+
   // Tạo meta ở đây
   return {
     title: "Thông tin đơn hàng " + data.data.code,
-    description: "Kiểm tra chi tiết đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.",
+    description: "Kiểm tra đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.",
     openGraph: {
       title: "Thông tin đơn hàng " + data.data.code,
-      description: "Kiểm tra chi tiết đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.",
+      description: "Kiểm tra đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.",
       images: [
         {
-          url: imageProduct,
+          // url: data.data.image ? data.data.image : "/no-pictures.png",
+          url : "/no-pictures.png",
           alt: data.data.code,
         }
       ]
