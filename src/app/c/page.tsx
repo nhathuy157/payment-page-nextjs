@@ -23,10 +23,10 @@ export async function generateMetadata(){
   // Tạo meta ở đây
   return {
     title: "Thông tin đơn hàng " + data.data.code,
-    description: "Kiểm tra chi tiết đơn hàng của bạn bao gồm thông tin sản phẩm, số lượng, giá cả và trạng thái giao hàng. Đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.",
+    description: "Kiểm tra chi tiết đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.",
     openGraph: {
-      title: data.data.code,
-      description: data.data.code,
+      title: "Thông tin đơn hàng " + data.data.code,
+      description: "Kiểm tra chi tiết đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.",
       images: [
         {
           url: imageProduct,
