@@ -19,6 +19,20 @@ function toVND(number: number) {
     currency: "VND",
   });
 }
+
+function openZalo(phone: string) {
+  //var zaloLink = "https://zalo.me/" + phone;
+
+  var zaloLink = "zalo://conversation?phone=" + phone;
+  var zaloWindow = window.open(zaloLink, "_blank");
+  if (zaloWindow) {
+      zaloWindow.focus();
+      console.log("success");
+  } else {
+      // error
+      console.log("ngốc");
+  }
+}
 function copyText(text: string, btn: any) {
   // Tạo một textarea tạm thời để chứa văn bản cần sao chép
   const textarea = document.createElement('textarea');
@@ -367,7 +381,7 @@ if (error) {
             />
             <div className={styles.contact_img}>
               <Image
-                // onClick={() => openZalo(customer.assign.phone)}
+                onClick={() => openZalo(detailsInfo.data.customer.assign.phone)}
                 src={"/zalo_icon.png"}
                 alt="error"
                 width={372}
