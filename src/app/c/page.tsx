@@ -20,21 +20,23 @@ export async function generateMetadata(){
   }
 
 
+  const title = "Thông tin đơn hàng " + data.data.code;
+  const description= "Kiểm tra đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.";
   // Tạo meta ở đây
   return {
-    title: "Thông tin đơn hàng " + data.data.code,
-    description: "Kiểm tra đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.",
+    title,
+    description,
     openGraph: {
-      title: "Thông tin đơn hàng " + data.data.code,
-      description: "Kiểm tra đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.",
+      title,
+      description,
       images: [
         {
           // url: data.data.image ? data.data.image : "/no-pictures.png",
           
-          url:"/no-pictures.png",
+          url: data?.data.image || "/no-pictures.png",
           height : 800 ,
           width : 1260,
-          alt:data.data.code,
+          alt: data.data.code,
         }
       ]
     }

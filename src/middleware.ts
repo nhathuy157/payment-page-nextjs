@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  request.nextUrl.searchParams.append('customParam', 'customValue');
+  //request.nextUrl.searchParams.append('customParam', 'customValue');
   // Add a custom query parameter
   const url = request.nextUrl.clone();
   // url.searchParams.set('myCustomParam', 'myValue');

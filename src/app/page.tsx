@@ -272,80 +272,85 @@ export default function Home({searchParams}:any) {
 
     // Dọn dẹp bộ đếm thời gian khi component bị hủy hoặc khi count thay đổi
     return () => clearTimeout(timer);
-}, [stateTks]);
+  }, [stateTks]);
 
-useEffect(() => {
-  (async () => {
-    const test = await getOrder(searchParams.order_hash);
-    setDetailsInfo(test);
-    setLoading(false);
-  })();
-}, [searchParams.order_hash]);
-
-useEffect(() => {
-  if (detailsInfo) {
-      
-    document.title = "Thông tin đơn hàng " + detailsInfo.data?.code;
-    window.detailsInfo = detailsInfo;
-  }
-}, [detailsInfo]);
-
+  let fetting = false;
+  useEffect(() => {
+    (async () => {
+      if(fetting) return;
+      fetting = true;
+      const test = await getOrder(searchParams.order_hash);
+      setDetailsInfo(test);
+      setLoading(false);
+      fetting = false;
+    })();
+  }, [searchParams.order_hash]);
 
   useEffect(() => {
-    // Hàm kiểm tra điều kiện
-    const checkCondition = async () => {
-        console.log('checkCondition');
-        if (isChecking || isStop) return; // Nếu đang kiểm tra, bỏ qua lần gọi mới
-        if (['đã gửi', 'hoàn thành'].includes(detailsInfo?.data.status.text.toLocaleLowerCase())) { setIsStop(true); return }; // Nếu đã gửi thì không update
-        setIsChecking(true);
-        try {
-            while (document.hidden) await new Promise(r => setTimeout(r, 500)); // Chờ người dùng bật lại tab, nếu có thay đổi thì reload luôn.
-            const data = await getOrder(searchParams.order_hash);
-            // debugger;
-            if (detailsInfo && data.success && JSON.stringify(data.data) !== JSON.stringify(detailsInfo)) { // Nếu data có thay đổi
-                // Nếu thay đổi về số tiền
-                if (data.data.totalPay !== detailsInfo.data.totalPay && data.data.totalPay == 0) {
-                    setIsStop(true);
-                    const paymentAmount = detailsInfo.data.totalPay - data.data.totalPay; // tiền trước trừ tiền sau
-                    showAlert("Thanh toán thành công  " , (result: { isConfirmed: any; }) => {
-                        if (result.isConfirmed) {
-                            window.location.reload(); // reload lại trang
-                        }
-                    });
-                }
-                else {
-                    window.location.reload(); // reload lại trang
-                }
-            }
-        } catch (err) {
-            console.error(err);
-        }
-        finally {
-            setIsChecking(false); // Kết thúc kiểm tra
-        }
-    };
+    if (detailsInfo) {
+        
+      document.title = "Thông tin đơn hàng " + detailsInfo.data?.code;
+      window.detailsInfo = detailsInfo;
+    }
+  }, [detailsInfo]);
 
-    // Thiết lập interval để kiểm tra điều kiện mỗi 60 giây
-    const intervalId = setInterval(checkCondition, 60 * 1000);
 
-    // Dọn dẹp interval khi component bị unmount
-    return () => clearInterval(intervalId);
-}, [isChecking]); //Chạy lại effect nếu isChecking thay đổi
-const ref = (window.location?.host.match(/\w+\.(\w+)\.vn/) || [])[1];
+    useEffect(() => {
+      // Hàm kiểm tra điều kiện
+      const checkCondition = async () => {
+          console.log('checkCondition');
+          if (isChecking || isStop) return; // Nếu đang kiểm tra, bỏ qua lần gọi mới
+          if (['đã gửi', 'hoàn thành'].includes(detailsInfo?.data.status.text.toLocaleLowerCase())) { setIsStop(true); return }; // Nếu đã gửi thì không update
+          setIsChecking(true);
+          try {
+              while (document.hidden) await new Promise(r => setTimeout(r, 500)); // Chờ người dùng bật lại tab, nếu có thay đổi thì reload luôn.
+              const data = await getOrder(searchParams.order_hash);
+              // debugger;
+              if (detailsInfo && data.success && JSON.stringify(data.data) !== JSON.stringify(detailsInfo)) { // Nếu data có thay đổi
+                  // Nếu thay đổi về số tiền
+                  if (data.data.totalPay !== detailsInfo.data.totalPay && data.data.totalPay == 0) {
+                      setIsStop(true);
+                      const paymentAmount = detailsInfo.data.totalPay - data.data.totalPay; // tiền trước trừ tiền sau
+                      showAlert("Thanh toán thành công  " , (result: { isConfirmed: any; }) => {
+                          if (result.isConfirmed) {
+                              window.location.reload(); // reload lại trang
+                          }
+                      });
+                  }
+                  else {
+                      window.location.reload(); // reload lại trang
+                  }
+              }
+          } catch (err) {
+              console.error(err);
+          }
+          finally {
+              setIsChecking(false); // Kết thúc kiểm tra
+          }
+      };
+
+      // Thiết lập interval để kiểm tra điều kiện mỗi 60 giây
+      const intervalId = setInterval(checkCondition, 60 * 1000);
+
+      // Dọn dẹp interval khi component bị unmount
+      return () => clearInterval(intervalId);
+  }, [isChecking]); //Chạy lại effect nếu isChecking thay đổi
+
+  if (loading || typeof window == 'undefined') {
+    return <div>Loading...</div>;
+  }
+
+  const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
   const BankInfo = (dataRef[ref] || dataRef.default).bank;
   const imgTks = (dataRef[ref] || dataRef.default).imgTks;
   const urlMain = (dataRef[ref] || dataRef.default).url;
-  
-if (loading || typeof window == 'undefined') {
-  return <div>Loading...</div>;
-}
   // Kiểm tra domain xem user truy cập từ brand nào
-  
-if (!searchParams.order_hash) window.location.href = `${urlMain}`;
+    
+  if (!searchParams.order_hash) window.location.href = `${urlMain}`;
 
-if (error) {
-    window.location.href = `${urlMain}`;
-}
+  if (error) {
+      window.location.href = `${urlMain}`;
+  }
 
   
   const showAlert = (text : any, callback : any) => {
