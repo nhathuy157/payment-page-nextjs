@@ -10,7 +10,8 @@ import { headers } from 'next/headers';
 export default function Navbar() {
   const headersList = headers();
   const url = new URL(headersList.get('URL') || "");
-  const ref = (window.location?.host.match(/\w+\.(\w+)\.vn/) || [])[1];
+ // const ref = (window.location?.host.match(/\w+\.(\w+)\.vn/) || [])[1];
+  const ref = (url.host.match(/\w+\.(\w+)\.vn/) || [])[1];
   const logo = (dataRef[ref] || dataRef.default).logo;
 
   console.log(logo);
