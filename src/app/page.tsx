@@ -10,7 +10,7 @@ import dataRef from "@/app/Config/config";
 import ReactCardFlip from "react-card-flip";
 import getOrder from "./common";
 import { Result } from "postcss";
-import { error } from "console";
+import { debug, error } from "console";
 // import { headers } from 'next/headers';
 
 function toVND(number: number) {
@@ -279,6 +279,8 @@ export default function Home({searchParams}:any) {
     (async () => {
       if(fetting) return;
       fetting = true;
+      const search = new URLSearchParams(window.location.search);
+      searchParams = Object.fromEntries(search.entries());
       const test = await getOrder(searchParams.order_hash);
       setDetailsInfo(test);
       setLoading(false);
@@ -345,7 +347,9 @@ export default function Home({searchParams}:any) {
   const imgTks = (dataRef[ref] || dataRef.default).imgTks;
   const urlMain = (dataRef[ref] || dataRef.default).url;
   // Kiểm tra domain xem user truy cập từ brand nào
-    
+  
+  const search = new URLSearchParams(window.location.search);
+  searchParams = Object.fromEntries(search.entries());
   if (!searchParams.order_hash) window.location.href = `${urlMain}`;
 
   if (error) {
