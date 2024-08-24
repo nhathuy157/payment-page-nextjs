@@ -2,6 +2,7 @@ import { headers } from 'next/headers';
 import getOrder from '../common';
 import Script from 'next/script'
 
+
 export async function generateMetadata(){
   const headersList = headers();
   const url = new URL(headersList.get('URL') || "");
@@ -22,7 +23,7 @@ export async function generateMetadata(){
 
   const title = "Thông tin đơn hàng " + data.data.code;
   const description= "Kiểm tra đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.";
-  const image = data?.data.image || "https://placehold.co/600x400?text=No+Image" ;
+  const image = data?.data.image || "../_next/image?url=%2Fno-pictures.png&w=384&q=75" ;
   // Tạo meta ở đây
   return {
     title,
