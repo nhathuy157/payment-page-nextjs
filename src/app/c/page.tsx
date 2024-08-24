@@ -22,6 +22,7 @@ export async function generateMetadata(){
 
   const title = "Thông tin đơn hàng " + data.data.code;
   const description= "Kiểm tra đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.";
+  const image = data?.data.image || "https://placehold.co/600x400?text=No+Image" ;
   // Tạo meta ở đây
   return {
     title,
@@ -32,14 +33,21 @@ export async function generateMetadata(){
       images: [
         {
           // url: data.data.image ? data.data.image : "/no-pictures.png",
-          
-          url: data?.data.image || "/no-pictures.png",
-          height : 800 ,
-          width : 1260,
+          url: [image],
           alt: data.data.code,
         }
       ]
-    }
+    },
+    twitter: {
+      title: title,
+      description: description,
+      images: [image],
+    },
+    facebook: {
+      title: title,
+      description: description,
+      images: [image],
+    },
   };
 }
 
