@@ -26,7 +26,7 @@ export async function generateMetadata({ params, searchParams }: any){
   const description= "Kiểm tra đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.";
   // const image = data?.data.image || "../_next/image?url=%2Fno-pictures.png&w=384&q=75" ;
 
-  const image = data?.data.image || "https://raw.githubusercontent.com/nhathuy157/Img-Extension/main/no-pictures.png";
+  const image = data?.data.image || "https://repository-images.githubusercontent.com/841320218/a7f67794-6ba3-4b3b-a764-a82e4b101476";
   console.log(image);
   // Tạo meta ở đây
   return {
