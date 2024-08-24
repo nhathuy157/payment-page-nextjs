@@ -24,7 +24,10 @@ export async function generateMetadata({ params, searchParams }: any){
 
   const title = "Thông tin đơn hàng " + data.data.code;
   const description= "Kiểm tra đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.";
-  const image = data?.data.image || "../_next/image?url=%2Fno-pictures.png&w=384&q=75" ;
+  // const image = data?.data.image || "../_next/image?url=%2Fno-pictures.png&w=384&q=75" ;
+
+  const image = data?.data.image || "https://raw.githubusercontent.com/nhathuy157/Img-Extension/main/no-pictures.png";
+  console.log(image);
   // Tạo meta ở đây
   return {
     title,
