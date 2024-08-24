@@ -43,7 +43,7 @@ const dataRef: any = {
     imgTks: "/TTtks.png",
     sologan: "Giải pháp đồng phục chuyên nghiệp",
     favicon: "/TTtks.png",
-    logo: "/TTtks.png",
+    logo: "/logodongphucTT.png",
     bank: {
       BANKID: "VCB",
       BANKNAME: "Vietcombank - Ngân hàng TMCP Ngoại Thương Việt Nam",
