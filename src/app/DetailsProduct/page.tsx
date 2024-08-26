@@ -6,6 +6,8 @@ import Image from "next/image";
 import Button from "@/components/Button/Button";
 // import { Link, useLocation, useNavigate } from 'react-router-dom'
 import getOrder from "../common";
+import Swal from "sweetalert2";
+import dataRef from "@/app/Config/config";
 
 function toVND(number: number) {
   return number.toLocaleString("it-IT", {
@@ -13,8 +15,49 @@ function toVND(number: number) {
     currency: "VND",
   });
 }
+const showAlert = (text : any, callback : any) => {
+  Swal.fire({
+    title: "Thông báo",
+    text: text,
+    icon: "error",
+    confirmButtonText: "OK",
+  }).then(callback);
+};
+
+function redirectToBrandPage() {
+  // Extract the base URL from the current URL
+  const currentUrl = window.location.href;
+  const baseUrl = currentUrl.split('/')[2]; // Get the domain part of the URL
+  
+  // Find the corresponding brand
+  const brandKey = Object.keys(dataRef).find(key => dataRef[key].url.includes(baseUrl)) || 'default';
+  
+  // Get the URL to redirect to
+  const redirectUrl = dataRef[brandKey].url;
+
+  // Redirect to the brand's URL
+  window.location.href = redirectUrl;
+}
+
+function showAlertWithTimeout(message: string, timeout: number) {
+  return new Promise<{ isConfirmed: boolean }>((resolve) => {
+    const timer = setTimeout(() => {
+      resolve({ isConfirmed: false });
+    }, timeout);
+
+    showAlert(message, (result: { isConfirmed: boolean }) => {
+      clearTimeout(timer); // Clear the timeout if the user responds
+      resolve(result);
+    });
+  });
+}
+
+
 
 export default function DetailsProduct({searchParams}:any) {
+
+ 
+
   const [detailsInfo, setDetailsInfo] = useState({
     "success": true,
     "data": {
@@ -216,6 +259,8 @@ export default function DetailsProduct({searchParams}:any) {
       "images": ""
     }
   });
+
+  
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     if(window.detailsInfo) {setDetailsInfo(window.detailsInfo); setLoading(false);}
@@ -232,7 +277,14 @@ export default function DetailsProduct({searchParams}:any) {
   // debugger
   const item = detailsInfo.data.products[searchParams.index];
   if(!item){
-    return <div>hash khong hợp lệ</div>;
+    showAlertWithTimeout("Không tìm thấy sản phẩm !", 15000) // 15 seconds timeout
+    .then((result) => {
+      if (result.isConfirmed) {
+        redirectToBrandPage();
+      } else {
+        redirectToBrandPage(); // Redirect after timeout if no response
+      }
+    });
   }
   return (
     <div className={classes.box_padding}>

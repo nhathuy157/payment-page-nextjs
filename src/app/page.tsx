@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import dataRef from "@/app/Config/config";
 import ReactCardFlip from "react-card-flip";
 import getOrder from "./common";
+import LoadingSpinner from '@/components/Loading/LoadingSpinner';
 import { Result } from "postcss";
 import { debug, error } from "console";
 // import { headers } from 'next/headers';
@@ -275,16 +276,35 @@ export default function Home({searchParams}:any) {
   }, [stateTks]);
 
   let fetting = false;
+  // useEffect(() => {
+  //   (async () => {
+  //     if(fetting) return;
+  //     fetting = true;
+  //     const search = new URLSearchParams(window.location.search);
+  //     searchParams = Object.fromEntries(search.entries());
+  //     const test = await getOrder(searchParams.order_hash);
+  //     setDetailsInfo(test);
+  //     setLoading(false);
+  //     fetting = false;
+  //   })();
+  // }, [searchParams.order_hash]);
+
   useEffect(() => {
     (async () => {
-      if(fetting) return;
+      if (fetting) return;
       fetting = true;
-      const search = new URLSearchParams(window.location.search);
-      searchParams = Object.fromEntries(search.entries());
-      const test = await getOrder(searchParams.order_hash);
-      setDetailsInfo(test);
-      setLoading(false);
-      fetting = false;
+      
+      try {
+        const search = new URLSearchParams(window.location.search);
+        const searchParams = Object.fromEntries(search.entries());
+        const test = await getOrder(searchParams.order_hash);
+        setDetailsInfo(test);
+      } catch (error) {
+        console.log("Lỗi nè cdl");
+      } finally {
+        setLoading(false);
+        fetting = false;
+      }
     })();
   }, [searchParams.order_hash]);
 
@@ -338,8 +358,9 @@ export default function Home({searchParams}:any) {
       return () => clearInterval(intervalId);
   }, [isChecking]); //Chạy lại effect nếu isChecking thay đổi
 
-  if (loading || typeof window == 'undefined') {
-    return <div>Loading...</div>;
+  if (loading || typeof window === 'undefined') {
+    //return <div>Loading...</div>;
+    return <LoadingSpinner />;
     
   }
 
