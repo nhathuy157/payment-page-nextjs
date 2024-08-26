@@ -1,12 +1,19 @@
 import { headers } from 'next/headers';
 import getOrder from '../common';
 import Script from 'next/script'
+import dataRef from "@/app/Config/config";
+import React, { useState, useEffect } from "react";
 
 
 export async function generateMetadata({ params, searchParams }: any){
   // debugger
-  // const headersList = headers();
-  // const url = new URL(headersList.get('URL') || "");
+   const headersList = headers();
+   const url = new URL(headersList.get('URL') || "");
+ 
+  //  const ref = (window.location?.host.match(/\w+\.(\w+)\.vn/) || [])[1];
+  //  
+  const ref = url ? (new URL(url).host.match(/\w+\.(\w+)\.vn/) || [])[1] : 'default';
+  const slogan = (dataRef[ref] || dataRef.default).slogan;
   const order_hash = searchParams.order_hash;
   var meta = {
     title: "URL không hợp lệ",
@@ -23,7 +30,7 @@ export async function generateMetadata({ params, searchParams }: any){
 
 
   const title = "Thông tin đơn hàng " + data.data.code;
-  const description= "Kiểm tra đơn hàng của bạn đảm bảo mọi thứ đều chính xác trước khi tiến hành thanh toán.";
+  const description= slogan ;
   // const image = data?.data.image || "../_next/image?url=%2Fno-pictures.png&w=384&q=75" ;
 
   const image = data?.data.image || "https://repository-images.githubusercontent.com/841320218/a7f67794-6ba3-4b3b-a764-a82e4b101476";

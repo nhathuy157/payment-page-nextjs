@@ -12,7 +12,7 @@
 const dataRef: any = {
   aothun247: {
     url: "https://aothun247.vn/",
-    imgTks: "/logoAoThun247.png",
+    imgTks: "/Aothun247tks.png",
     sologan: "Đơn giản là đẹp",
     favicon: "/logoAoThun247.png",
     logo: "/logoAoThun247.png",

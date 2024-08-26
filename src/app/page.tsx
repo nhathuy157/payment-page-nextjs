@@ -340,12 +340,14 @@ export default function Home({searchParams}:any) {
 
   if (loading || typeof window == 'undefined') {
     return <div>Loading...</div>;
+    
   }
 
   const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
+  const urlMain = (dataRef[ref] || dataRef.default).url;
   const BankInfo = (dataRef[ref] || dataRef.default).bank;
   const imgTks = (dataRef[ref] || dataRef.default).imgTks;
-  const urlMain = (dataRef[ref] || dataRef.default).url;
+ 
   // Kiểm tra domain xem user truy cập từ brand nào
   
   const search = new URLSearchParams(window.location.search);
@@ -692,7 +694,7 @@ export default function Home({searchParams}:any) {
         <div className={`${styles.container} ${styles.transport}`}>
           <p className="darkColor">Vận chuyển và nhận hàng</p>
           <p>Mã vận chuyển : {detailsInfo.data.ships.track || "Chưa có thông tin"}</p>
-          <p>Đơn vị vận chuyển : {detailsInfo.data.ships.delivery.text || "Chưa có thông tin"}</p>
+          <p>Đơn vị vận chuyển : {detailsInfo.data.ships.delivery?.text || "Chưa có thông tin"}</p>
           <p>
             Dự kiến nhận hàng :{" "}
             {/* thời gian dự kiến hoặc sau 7 ngày đơn hàng đc tạo */}
