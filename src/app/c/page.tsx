@@ -6,14 +6,13 @@ import React, { useState, useEffect } from "react";
 
 
 export async function generateMetadata({ params, searchParams }: any){
-  // debugger
-   const headersList = headers();
-   const url = new URL(headersList.get('URL') || "");
- 
-  //  const ref = (window.location?.host.match(/\w+\.(\w+)\.vn/) || [])[1];
-  //  
-  const ref = url ? (new URL(url).host.match(/\w+\.(\w+)\.vn/) || [])[1] : 'default';
-  const slogan = (dataRef[ref] || dataRef.default).slogan;
+
+  const url = headers().get('host') || '';
+  
+  // Xác định thương hiệu dựa trên URL
+  const brandKey = Object.keys(dataRef).find(key => url.includes(key)) || 'default';
+  
+  
   const order_hash = searchParams.order_hash;
   var meta = {
     title: "URL không hợp lệ",
@@ -30,11 +29,12 @@ export async function generateMetadata({ params, searchParams }: any){
 
 
   const title = "Thông tin đơn hàng " + data.data.code;
-  const description= slogan ;
-  // const image = data?.data.image || "../_next/image?url=%2Fno-pictures.png&w=384&q=75" ;
+  const description = dataRef[brandKey]?.sologan || "Giải pháp đồng phục chuyên nghiệp";
+  
+  
 
   const image = data?.data.image || "https://repository-images.githubusercontent.com/841320218/a7f67794-6ba3-4b3b-a764-a82e4b101476";
-  console.log(image);
+  console.log(description);
   // Tạo meta ở đây
   return {
     title,
