@@ -300,7 +300,7 @@ export default function Home({ searchParams }: any) {
         const test = await getOrder(searchParams.order_hash);
         setDetailsInfo(test);
       } catch (error) {
-        console.log("Lỗi nè cdl");
+        console.log("error");
       } finally {
         setLoading(false);
         fetting = false;

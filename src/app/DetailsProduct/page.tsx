@@ -46,23 +46,7 @@ function redirectToBrandPage() {
 }
 
 
-function showAlertWithTimeout(message: string, timeout: number) {
-  return new Promise<void>((resolve) => {
-    let userInteracted = false;  // Flag to track user interaction
 
-    const timer = setTimeout(() => {
-      if (!userInteracted) {
-        resolve();  // Resolve only if the user hasn't interacted
-      }
-    }, timeout);
-
-    showAlert(message, () => {
-      userInteracted = true;
-      clearTimeout(timer);  // Clear the timeout if the user responds
-      resolve();  // Resolve immediately if user clicks "OK"
-    });
-  });
-}
 
 
 
@@ -273,15 +257,7 @@ export default function DetailsProduct({ searchParams }: any) {
   });
 
 
-  // const [loading, setLoading] = useState(true);
-  // useEffect(() => {
-  //   if(window.detailsInfo) {setDetailsInfo(window.detailsInfo); setLoading(false);}
-  //   else getOrder(searchParams.order_hash).then(setDetailsInfo).then(() => {
-  //     document.title = detailsInfo.data?.code;
-  //     setLoading(false);
-  //   })
-  //   return () => { }
-  // }, []);
+  
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
