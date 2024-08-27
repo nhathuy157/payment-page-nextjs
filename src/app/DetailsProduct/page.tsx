@@ -7,6 +7,7 @@ import Button from "@/components/Button/Button";
 // import { Link, useLocation, useNavigate } from 'react-router-dom'
 import getOrder from "../common";
 import Swal from "sweetalert2";
+import LoadingSpinner from '@/components/Loading/LoadingSpinner';
 import dataRef from "@/app/Config/config";
 
 function toVND(number: number) {
@@ -16,11 +17,16 @@ function toVND(number: number) {
   });
 }
 const showAlert = (text : any, callback : any) => {
+  document.body.style.backgroundColor = "#DFE3EF";
   Swal.fire({
     title: "Thông báo",
     text: text,
     icon: "error",
     confirmButtonText: "OK",
+    showConfirmButton: true,
+    allowOutsideClick: false, // Ngăn không cho đóng bằng cách nhấp ra ngoài
+    allowEscapeKey: false,    // Ngăn không cho đóng bằng phím Esc
+    showCancelButton: false   // Ẩn nút hủy nếu có
   }).then(callback);
 };
 
@@ -28,10 +34,10 @@ function redirectToBrandPage() {
   // Extract the base URL from the current URL
   const currentUrl = window.location.href;
   const baseUrl = currentUrl.split('/')[2]; // Get the domain part of the URL
-  
+
   // Find the corresponding brand
   const brandKey = Object.keys(dataRef).find(key => dataRef[key].url.includes(baseUrl)) || 'default';
-  
+
   // Get the URL to redirect to
   const redirectUrl = dataRef[brandKey].url;
 
@@ -39,24 +45,30 @@ function redirectToBrandPage() {
   window.location.href = redirectUrl;
 }
 
+
 function showAlertWithTimeout(message: string, timeout: number) {
-  return new Promise<{ isConfirmed: boolean }>((resolve) => {
+  return new Promise<void>((resolve) => {
+    let userInteracted = false;  // Flag to track user interaction
+
     const timer = setTimeout(() => {
-      resolve({ isConfirmed: false });
+      if (!userInteracted) {
+        resolve();  // Resolve only if the user hasn't interacted
+      }
     }, timeout);
 
-    showAlert(message, (result: { isConfirmed: boolean }) => {
-      clearTimeout(timer); // Clear the timeout if the user responds
-      resolve(result);
+    showAlert(message, () => {
+      userInteracted = true;
+      clearTimeout(timer);  // Clear the timeout if the user responds
+      resolve();  // Resolve immediately if user clicks "OK"
     });
   });
 }
 
 
 
-export default function DetailsProduct({searchParams}:any) {
+export default function DetailsProduct({ searchParams }: any) {
 
- 
+
 
   const [detailsInfo, setDetailsInfo] = useState({
     "success": true,
@@ -260,31 +272,61 @@ export default function DetailsProduct({searchParams}:any) {
     }
   });
 
-  
+
+  // const [loading, setLoading] = useState(true);
+  // useEffect(() => {
+  //   if(window.detailsInfo) {setDetailsInfo(window.detailsInfo); setLoading(false);}
+  //   else getOrder(searchParams.order_hash).then(setDetailsInfo).then(() => {
+  //     document.title = detailsInfo.data?.code;
+  //     setLoading(false);
+  //   })
+  //   return () => { }
+  // }, []);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    if(window.detailsInfo) {setDetailsInfo(window.detailsInfo); setLoading(false);}
-    else getOrder(searchParams.order_hash).then(setDetailsInfo).then(() => {
-      // document.title = detailsInfo.data?.code;
-      setLoading(false);
-    })
-    return () => { }
+    const fetchDetails = async () => {
+      try {
+        if (window.detailsInfo) {
+          setDetailsInfo(window.detailsInfo);
+          setLoading(false);
+        } else {
+          const detailsInfo = await getOrder(searchParams.order_hash);
+          setDetailsInfo(detailsInfo);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching order details:", error);
+        // Handle the error (e.g., show an error message to the user)
+        setLoading(false);
+        showAlert("Không tìm thấy sản phẩm ! " , (result: { isConfirmed: any; isnotConfirmed: any; }) => {
+          if (result.isConfirmed) {
+            redirectToBrandPage(); // reload lại trang
+          }
+          
+      });
+      }
+    };
+
+    fetchDetails();
+
+    return () => { };
   }, []);
 
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
   // debugger
   const item = detailsInfo.data.products[searchParams.index];
-  if(!item){
-    showAlertWithTimeout("Không tìm thấy sản phẩm !", 15000) // 15 seconds timeout
-    .then((result) => {
+  if (!item) {
+    showAlert("Không tìm thấy sản phẩm !  " , (result: { isConfirmed: any}) => {
       if (result.isConfirmed) {
-        redirectToBrandPage();
-      } else {
-        redirectToBrandPage(); // Redirect after timeout if no response
+        redirectToBrandPage(); // reload lại trang
       }
-    });
+      
+      
+  });
   }
   return (
     <div className={classes.box_padding}>
@@ -298,7 +340,7 @@ export default function DetailsProduct({searchParams}:any) {
           >
             <Image
               className={classes.backImg}
-              src={ "/ArrowLeft.png"}
+              src={"/ArrowLeft.png"}
               alt="error"
               width={500}
               height={354}
@@ -322,12 +364,12 @@ export default function DetailsProduct({searchParams}:any) {
           <ul className={classes.listInfo}>
             <InfoITem title="Tên sản phẩm" content={item.name} />
             <InfoITem title="Chất liệu" content={item.material.name} />
-            <InfoITem title="Màu sắc" content={item.color } />
+            <InfoITem title="Màu sắc" content={item.color} />
             <InfoITem title="In" content={item.print || "Không"} />
-            <InfoITem title="Thêu" content={item.embroider || "Không" } />
-            <InfoITem title="Số lượng" content={item.number}/>
-            <InfoITem title="Đơn giá" content={item.money}/>
-            <InfoITem darkColor={true} title="Tổng tiền" content={toVND(item.money * item.number ) } />
+            <InfoITem title="Thêu" content={item.embroider || "Không"} />
+            <InfoITem title="Số lượng" content={item.number} />
+            <InfoITem title="Đơn giá" content={item.money} />
+            <InfoITem darkColor={true} title="Tổng tiền" content={toVND(item.money * item.number)} />
             {/* <InfoITem darkColor={true} title="Cọc ( %50)" content={detailsInfo.total.deposit} /> */}
           </ul>
           {/* <div className={classes.box_btn}>
@@ -346,7 +388,7 @@ export default function DetailsProduct({searchParams}:any) {
           Lưu ý : Nếu đơn hàng có vấn đề, hoặc không đúng yêu cầu của mình liên
           hệ số điện thoại/ zalo : {detailsInfo.data.customer.assign.phone} để được nhân viên hỗ trợ
         </p>
-        
+
       </div>
     </div>
   );
