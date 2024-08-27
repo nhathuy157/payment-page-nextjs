@@ -27,11 +27,11 @@ function openZalo(phone: string) {
   var zaloLink = "zalo://conversation?phone=" + phone;
   var zaloWindow = window.open(zaloLink, "_blank");
   if (zaloWindow) {
-      zaloWindow.focus();
-      console.log("success");
+    zaloWindow.focus();
+    console.log("success");
   } else {
-      // error
-      console.log("ngốc");
+    // error
+    console.log("ngốc");
   }
 }
 function copyText(text: string, btn: any) {
@@ -58,7 +58,7 @@ function copyText(text: string, btn: any) {
 }
 
 
-export default function Home({searchParams}:any) {
+export default function Home({ searchParams }: any) {
   const [statePayment, setsStatePayment] = useState(true);
   const [stateTks, setsStateTks] = useState(true);
   const [isChecking, setIsChecking] = useState(false);
@@ -265,10 +265,10 @@ export default function Home({searchParams}:any) {
       }
     }
   });
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
-        setsStateTks(!stateTks);
+      setsStateTks(!stateTks);
     }, 6000);
 
     // Dọn dẹp bộ đếm thời gian khi component bị hủy hoặc khi count thay đổi
@@ -293,7 +293,7 @@ export default function Home({searchParams}:any) {
     (async () => {
       if (fetting) return;
       fetting = true;
-      
+
       try {
         const search = new URLSearchParams(window.location.search);
         const searchParams = Object.fromEntries(search.entries());
@@ -310,89 +310,93 @@ export default function Home({searchParams}:any) {
 
   useEffect(() => {
     if (detailsInfo) {
-        
+
       document.title = "Thông tin đơn hàng " + detailsInfo.data?.code;
       window.detailsInfo = detailsInfo;
     }
   }, [detailsInfo]);
 
 
-    useEffect(() => {
-      // Hàm kiểm tra điều kiện
-      const checkCondition = async () => {
-          console.log('checkCondition');
-          if (isChecking || isStop) return; // Nếu đang kiểm tra, bỏ qua lần gọi mới
-          if (['đã gửi', 'hoàn thành'].includes(detailsInfo?.data.status.text.toLocaleLowerCase())) { setIsStop(true); return }; // Nếu đã gửi thì không update
-          setIsChecking(true);
-          try {
-              while (document.hidden) await new Promise(r => setTimeout(r, 500)); // Chờ người dùng bật lại tab, nếu có thay đổi thì reload luôn.
-              const data = await getOrder(searchParams.order_hash);
-              // debugger;
-              if (detailsInfo && data.success && JSON.stringify(data.data) !== JSON.stringify(detailsInfo)) { // Nếu data có thay đổi
-                  // Nếu thay đổi về số tiền
-                  if (data.data.totalPay !== detailsInfo.data.totalPay && data.data.totalPay == 0) {
-                      setIsStop(true);
-                      const paymentAmount = detailsInfo.data.totalPay - data.data.totalPay; // tiền trước trừ tiền sau
-                      showAlert("Thanh toán thành công  " , (result: { isConfirmed: any; }) => {
-                          if (result.isConfirmed) {
-                              window.location.reload(); // reload lại trang
-                          }
-                      });
-                  }
-                  else {
-                      window.location.reload(); // reload lại trang
-                  }
+  useEffect(() => {
+    // Hàm kiểm tra điều kiện
+    const checkCondition = async () => {
+      console.log('checkCondition');
+      if (isChecking || isStop) return; // Nếu đang kiểm tra, bỏ qua lần gọi mới
+      if (['đã gửi', 'hoàn thành'].includes(detailsInfo?.data.status.text.toLocaleLowerCase())) { setIsStop(true); return }; // Nếu đã gửi thì không update
+      setIsChecking(true);
+      try {
+        while (document.hidden) await new Promise(r => setTimeout(r, 500)); // Chờ người dùng bật lại tab, nếu có thay đổi thì reload luôn.
+        const data = await getOrder(searchParams.order_hash);
+        // debugger;
+        if (detailsInfo && data.success && JSON.stringify(data.data) !== JSON.stringify(detailsInfo)) { // Nếu data có thay đổi
+          // Nếu thay đổi về số tiền
+          if (data.data.totalPay !== detailsInfo.data.totalPay && data.data.totalPay == 0) {
+            setIsStop(true);
+            const paymentAmount = detailsInfo.data.totalPay - data.data.totalPay; // tiền trước trừ tiền sau
+            showAlert("Thanh toán thành công  ", (result: { isConfirmed: any; }) => {
+              if (result.isConfirmed) {
+                window.location.reload(); // reload lại trang
               }
-          } catch (err) {
-              console.error(err);
+            });
           }
-          finally {
-              setIsChecking(false); // Kết thúc kiểm tra
+          else {
+            window.location.reload(); // reload lại trang
           }
-      };
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      finally {
+        setIsChecking(false); // Kết thúc kiểm tra
+      }
+    };
 
-      // Thiết lập interval để kiểm tra điều kiện mỗi 60 giây
-      const intervalId = setInterval(checkCondition, 60 * 1000);
+    // Thiết lập interval để kiểm tra điều kiện mỗi 60 giây
+    const intervalId = setInterval(checkCondition, 60 * 1000);
 
-      // Dọn dẹp interval khi component bị unmount
-      return () => clearInterval(intervalId);
+    // Dọn dẹp interval khi component bị unmount
+    return () => clearInterval(intervalId);
   }, [isChecking]); //Chạy lại effect nếu isChecking thay đổi
 
   if (loading || typeof window === 'undefined') {
     //return <div>Loading...</div>;
     return <LoadingSpinner />;
-    
+
   }
 
   const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
   const urlMain = (dataRef[ref] || dataRef.default).url;
   const BankInfo = (dataRef[ref] || dataRef.default).bank;
   const imgTks = (dataRef[ref] || dataRef.default).imgTks;
- 
+
   // Kiểm tra domain xem user truy cập từ brand nào
-  
+
   const search = new URLSearchParams(window.location.search);
   searchParams = Object.fromEntries(search.entries());
   if (!searchParams.order_hash) window.location.href = `${urlMain}`;
 
   if (error) {
-      window.location.href = `${urlMain}`;
+    window.location.href = `${urlMain}`;
   }
 
-  
-  const showAlert = (text : any, callback : any) => {
+
+  const showAlert = (text: any, callback: any) => {
     Swal.fire({
       title: "Thông báo",
       text: text,
       icon: "success",
       confirmButtonText: "OK",
+      showConfirmButton: true,
+      allowOutsideClick: false, // Ngăn không cho đóng bằng cách nhấp ra ngoài
+      allowEscapeKey: false,    // Ngăn không cho đóng bằng phím Esc
+      showCancelButton: false
     }).then(callback);
   };
   function SetPayments() {
     setsStatePayment(!statePayment);
   }
 
-  
+
   return (
     <div className={`grid wide ${styles.Payment}`}>
       <div className={`l-8 c-12 ${styles.right}`}>
