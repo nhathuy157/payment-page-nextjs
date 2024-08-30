@@ -73,6 +73,19 @@ function redirectToBrandPage() {
   window.location.href = redirectUrl;
 }
 
+const showAlert = (text: any, callback: any, type: any) => {
+  Swal.fire({
+    title: "Thông báo",
+    text: text,
+    icon: type,
+    confirmButtonText: "OK",
+    showConfirmButton: true,
+    allowOutsideClick: false, // Ngăn không cho đóng bằng cách nhấp ra ngoài
+    allowEscapeKey: false,    // Ngăn không cho đóng bằng phím Esc
+    showCancelButton: false
+  }).then(callback);
+};
+
 
 export default function Home({ searchParams }: any) {
   const [statePayment, setsStatePayment] = useState(true);
@@ -261,39 +274,49 @@ export default function Home({ searchParams }: any) {
   //   })();
   // }, [searchParams.order_hash]);
 
+ 
+  
   useEffect(() => {
     (async () => {
       if (fetting) return;
       fetting = true;
-
+  
       try {
         const search = new URLSearchParams(window.location.search);
         const searchParams = Object.fromEntries(search.entries());
+  
+        if (!searchParams.order_hash) {
+          showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any; }) => {
+            if (result.isConfirmed) {
+              redirectToBrandPage(); // reload lại trang
+            }
+          }, "error");
+          return;
+        }
+  
         const test = await getOrder(searchParams.order_hash);
         setDetailsInfo(test);
       } catch (error) {
-        // console.log("error");
-        showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any }) => {
+        showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any; }) => {
           if (result.isConfirmed) {
             redirectToBrandPage(); // reload lại trang
           }
         }, "error");
       } finally {
-        
-        
         setLoading(false);
         fetting = false;
       }
     })();
   }, [searchParams.order_hash]);
-
+  
+  
   useEffect(() => {
     if (detailsInfo) {
-
       document.title = "Thông tin đơn hàng " + detailsInfo.data?.code;
       window.detailsInfo = detailsInfo;
     }
   }, [detailsInfo]);
+  
 
 
   useEffect(() => {
@@ -360,18 +383,7 @@ export default function Home({ searchParams }: any) {
   }
 
 
-  const showAlert = (text: any, callback: any, type: any) => {
-    Swal.fire({
-      title: "Thông báo",
-      text: text,
-      icon: type,
-      confirmButtonText: "OK",
-      showConfirmButton: true,
-      allowOutsideClick: false, // Ngăn không cho đóng bằng cách nhấp ra ngoài
-      allowEscapeKey: false,    // Ngăn không cho đóng bằng phím Esc
-      showCancelButton: false
-    }).then(callback);
-  };
+  
   function SetPayments() {
     setsStatePayment(!statePayment);
   }

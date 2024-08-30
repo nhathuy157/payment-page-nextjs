@@ -17,6 +17,8 @@ const dataRef: any = {
     favicon: "/logoAoThun247.png",
     logo: "/logoAoThun247.png",
     CSKH: "0853511234",
+    imgOder: "imgOder247.jpg",
+    API : "https://apidonhang.aothun247.vn/getOrderDetail?order_hash=",
     bank: {
       BANKID: "VPB",
       BANKNAME: "VPBank - Ngân hàng TMCP Việt Nam Thịnh Vượng",
@@ -32,6 +34,8 @@ const dataRef: any = {
     favicon: "/logoDPBTP.png",
     logo: "/logoDPBTP.png",
     CSKH: "0961887777",
+    imgOder: "imgOderBTP.jpg",
+    API : "https://apidonhang.dongphucbtp.vn/getOrderDetail?order_hash=",
     bank: {
       BANKID: "VCB",
       BANKNAME: "Vietcombank - Ngân hàng TMCP Ngoại Thương Việt Nam",
@@ -47,6 +51,8 @@ const dataRef: any = {
     favicon: "/TTtks.png",
     logo: "/logodongphucTT.jpg",
     CSKH: "0889581234",
+    imgOder: "imgOderBTP.jpg",
+    API : "https://apidonhang.thientrang.vn/getOrderDetail?order_hash=",
     bank: {
       BANKID: "VCB",
       BANKNAME: "Vietcombank - Ngân hàng TMCP Ngoại Thương Việt Nam",
@@ -62,6 +68,8 @@ const dataRef: any = {
     favicon: "/logodongphucTT.png",
     logo: "/logodongphucTT.jpg",
     CSKH: "0889581234",
+    imgOder: "imgOderBTP.jpg",
+    API : "https://apidonhang.thientrang.vn/getOrderDetail?order_hash=",
     bank: {
       BANKID: "VPB",
       BANKNAME: "VPBank - Ngân hàng TMCP Việt Nam Thịnh Vượng",

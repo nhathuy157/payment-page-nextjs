@@ -16,18 +16,21 @@ function toVND(number: number) {
     currency: "VND",
   });
 }
-const showAlert = (text: any, callback: any) => {
-  document.body.style.backgroundColor = "#DFE3EF";
+const showAlert = (text: any, callback: any, type: any) => {
+  // Thêm lớp CSS để thay đổi màu nền khi hiển thị alert
+  
+
+  // Hiển thị alert
   Swal.fire({
     title: "Thông báo",
     text: text,
-    icon: "error",
+    icon: type,
     confirmButtonText: "OK",
     showConfirmButton: true,
     allowOutsideClick: false, // Ngăn không cho đóng bằng cách nhấp ra ngoài
     allowEscapeKey: false,    // Ngăn không cho đóng bằng phím Esc
-    showCancelButton: false   // Ẩn nút hủy nếu có
-  }).then(callback);
+    showCancelButton: false
+  }).then(callback)
 };
 
 function redirectToBrandPage() {
@@ -341,7 +344,7 @@ export default function DetailsProduct() {
             if (result.isConfirmed) {
               redirectToBrandPage();
             }
-          });
+          },"error");
           return; // Kết thúc hàm nếu `order_hash` không hợp lệ
         }
   
@@ -355,7 +358,7 @@ export default function DetailsProduct() {
               if (result.isConfirmed) {
                 redirectToBrandPage();
               }
-            });
+            },"error");
             return;
           }
   
@@ -369,7 +372,7 @@ export default function DetailsProduct() {
           if (result.isConfirmed) {
             redirectToBrandPage();
           }
-        });
+        },"error");
       } finally {
         setLoading(false);
       }
@@ -401,7 +404,7 @@ export default function DetailsProduct() {
       if (result.isConfirmed) {
         redirectToBrandPage(); // reload lại trang
       }
-    });
+    },"error");
     return null;
   }
   

@@ -1,7 +1,8 @@
 import { headers } from 'next/headers';
+import dataRef from "@/app/Config/config";
 import getOrder from '../common';
 import Script from 'next/script'
-import dataRef from "@/app/Config/config";
+
 import React, { useState, useEffect } from "react";
 
 
@@ -30,10 +31,11 @@ export async function generateMetadata({ params, searchParams }: any){
 
   const title = "Thông tin đơn hàng " + data.data.code;
   const description = dataRef[brandKey]?.sologan || "Giải pháp đồng phục chuyên nghiệp";
+  const image = dataRef[brandKey]?.imgOder || "https://repository-images.githubusercontent.com/841320218/a7f67794-6ba3-4b3b-a764-a82e4b101476";
   
   
 
-  const image = data?.data.products.image[0] || "https://repository-images.githubusercontent.com/841320218/a7f67794-6ba3-4b3b-a764-a82e4b101476";
+ // const image = data?.data.products.image[0] || "https://repository-images.githubusercontent.com/841320218/a7f67794-6ba3-4b3b-a764-a82e4b101476";
   console.log(description);
   // Tạo meta ở đây
   return {
