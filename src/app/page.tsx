@@ -8,8 +8,10 @@ import ProductItem from "@/components/ProductItem/ProductItem";
 import Swal from "sweetalert2";
 import dataRef from "@/app/Config/config";
 import ReactCardFlip from "react-card-flip";
+import Navbar from "@/components/Navbar/Navbar";
 import getOrder from "./common";
 import LoadingSpinner from '@/components/Loading/LoadingSpinner';
+
 import { Result } from "postcss";
 import { debug, error } from "console";
 // import { headers } from 'next/headers';
@@ -266,6 +268,8 @@ export default function Home({ searchParams }: any) {
     }
   });
 
+
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setsStateTks(!stateTks);
@@ -359,7 +363,7 @@ export default function Home({ searchParams }: any) {
   }, [isChecking]); //Chạy lại effect nếu isChecking thay đổi
 
   if (loading || typeof window === 'undefined') {
-    //return <div>Loading...</div>;
+
     return <LoadingSpinner />;
 
   }
@@ -368,6 +372,7 @@ export default function Home({ searchParams }: any) {
   const urlMain = (dataRef[ref] || dataRef.default).url;
   const BankInfo = (dataRef[ref] || dataRef.default).bank;
   const imgTks = (dataRef[ref] || dataRef.default).imgTks;
+  const CSKH = (dataRef[ref] || dataRef.default).CSKH;
 
   // Kiểm tra domain xem user truy cập từ brand nào
 
@@ -397,45 +402,40 @@ export default function Home({ searchParams }: any) {
   }
 
 
+
+
+
+  const statusElement = document.getElementById("statusText");
+  if (statusElement && detailsInfo && detailsInfo.data && detailsInfo.data.status) {
+    statusElement.innerHTML = `${detailsInfo.data.status.text}`;
+  }
+
+
+
+
+
   return (
+
     <div className={`grid wide ${styles.Payment}`}>
+
+
       <div className={`l-8 c-12 ${styles.right}`}>
 
         <div className={styles.info}>
           <ul className={`${styles.listInfo} ${styles.container}`}>
-            <h1 className="textTitle">Khách hàng</h1>
+            <h1 className="textTitle">Thông tin khách hàng</h1>
             <InfoITem title="Khách hàng" content={detailsInfo.data.customer.name} />
             <InfoITem title="Số điện thoại" content={detailsInfo.data.customer.phone} />
             <InfoITem title="Địa chỉ" content={detailsInfo.data.customer.address} />
           </ul>
           <ul className={`${styles.listInfo} ${styles.container}`}>
-            <h1 className="textTitle">Nhân viên</h1>
+            <h1 className="textTitle">Nhân viên tư vấn</h1>
             <InfoITem title="Nhân viên" content={(detailsInfo.data.customer.assign.last_name || '') + ' ' + detailsInfo.data.customer.assign.first_name} />
             <InfoITem
               title="Số điện thoại"
               content={detailsInfo.data.customer.assign.phone}
             />
-            <div className={styles.contact_img}>
-              <Image
-                onClick={() => openZalo(detailsInfo.data.customer.assign.phone)}
-                src={"/zalo_icon.png"}
-                alt="error"
-                width={372}
-                height={288}
-              />
-              <Image
-                src={"/Phone.png"}
-                alt="error"
-                width={372}
-                height={288}
-              />
-              <Image
-                src={"/Facebook.png"}
-                alt="error"
-                width={372}
-                height={288}
-              />
-            </div>
+
           </ul>
 
           {/* <div className={styles.box_img}>
@@ -459,36 +459,72 @@ export default function Home({ searchParams }: any) {
           </div>
 
           <div className={styles.stt}>
-            <div className={styles.box_btn}>
-              <p className="">Trạng thái :</p>
-              <p className="textTitle">{detailsInfo.data.status.text}</p>
-              {/* <Button className={['đã gửi', 'hoàn thành'].includes(status.text.toLocaleLowerCase()) ? styles.btn_stt_success : styles.btn_stt_warning}>
-                                {status.text}
-                            </Button> */}
-              {/* <a href='#QR' onClick={SetDetails}>
-                                <Button className={`l-0 c-12 ${styles.btn}`}>
-                                    Thanh Toán
-                                </Button>
-                            </a> */}
+            <div className={styles.stt_left}>
+              <p>
+                Thời gian sản xuất dự kiến từ 8-10 ngày. Không tính chủ nhật và nghỉ lễ.
+              </p>
+              <p>
+                Quý khách nếu có thắc mắc: tình trạng đơn, thông tin đơn hàng, góp ý và khiếu nại, ...
+              </p>
+              <p>
+                Vui lòng liên hệ chăm sóc khách hàng :{CSKH}
+
+                <Image
+                  onClick={() => {
+                    openZalo(CSKH);
+                  }}
+                  src={'/zalo_icon.png'}
+                  alt="error"
+                  width={372}
+                  height={288}
+                  className={styles.imgIcon}
+                />
+              </p>
             </div>
-            <div className="c-12 l-6">
+
+            <div className="c-12 l-5">
               <InfoITem
                 darkColor={true}
                 title="Tổng tiền"
                 content={
                   <>
-                    {toVND(detailsInfo.data.totalMoneyAfterVATorDiscount)}
-                    <br />
-                    (VAT: {detailsInfo.data.totalVAT})
+                    {toVND(detailsInfo.data.totalMoney)}
+                    {/* <br />
+                    (VAT: {detailsInfo.data.totalVAT}) */}
                   </>
                 }
               />
+              {
+                detailsInfo.data.discount > 0 ? (
+                  <InfoITem
+                    darkColor={true}
+                    title="Giảm giá"
+                    content={`${toVND(detailsInfo.data.discount)}`}
+                  />
+                ) :
+                  <>   </>
+              }
+
+              {/* <InfoITem
+                darkColor={true}
+                title="Giảm giá"
+                content={`${toVND(detailsInfo.data.discount)} (${Math.round(detailsInfo.data.totalPay / detailsInfo.data.totalMoneyAfterVATorDiscount * 100)}%)`}
+              /> */}
+
+              {
+                detailsInfo.data.discount > 0 ? (<InfoITem
+                  darkColor={true}
+                  title="Sau giảm giá"
+                  content={`${toVND(detailsInfo.data.totalMoneyAfterVATorDiscount)} `}
+                />) : <>   </>
+              }
+
               <InfoITem
                 darkColor={true}
                 title="Đã thanh toán"
-                content={`${toVND(detailsInfo.data.totalPay)} (${Math.round(detailsInfo.data.totalPay / detailsInfo.data.totalMoneyAfterVATorDiscount * 100)}%)`}
+                content={`${toVND(detailsInfo.data.totalPay)} `}
               />
-              <InfoITem
+              {/* <InfoITem
                 darkColor={true}
                 title="Cần thanh toán"
                 content={
@@ -496,229 +532,197 @@ export default function Home({ searchParams }: any) {
                     {toVND(detailsInfo.data.totalMoneyAfterVATorDiscount - detailsInfo.data.totalPay)} <br /> (Chưa bao gồm phí ship){" "}
                   </>
                 }
-              />
+              /> */}
             </div>
           </div>
         </div>
       </div>
       <div className={`${styles.qrpay}`}>
         {detailsInfo.data.totalAccountAll > 0 ? (
-          <ReactCardFlip flipDirection="horizontal" isFlipped={statePayment}>
-            <div
-              id="QR"
-              className={`${styles.container} ${styles.height_left}`}
-            >
-              <div className={styles.Payhead}>
-                <p className="textTitle">Mã QR thanh toán</p>
+          //  <ReactCardFlip flipDirection="horizontal" isFlipped={statePayment}>
+          <div
+            id="QR"
+            className={`${styles.container} ${styles.height_left}`}
+          >
+            <div className={styles.Payhead}>
+              <p className="textTitle">Mã QR thanh toán</p>
+            </div>
+            <div className={`${styles.pay_container}`}>
+              <div className={` ${styles.box_QR}`}>
+                <img
+                  className={styles.QR_img}
+                  src={`https://img.vietqr.io/image/${BankInfo.BANKID}-${BankInfo.ACCOUNT_NO}-compact.png?amount=${detailsInfo.data.totalMoneyAfterVATorDiscount - detailsInfo.data.totalPay}&addInfo=${detailsInfo.data.code + " Thanh toan don hang"}&accountName=${BankInfo.ACCOUNT_NAME}`}
+                  alt="error"
+                  width={372}
+                  height={288}
+                />
               </div>
-              <div className={`${styles.pay_container}`}>
-                <div className={` ${styles.box_QR}`}>
-                  <img
-                    className={styles.QR_img}
-                    src={`https://img.vietqr.io/image/${BankInfo.BANKID}-${BankInfo.ACCOUNT_NO}-compact.png?amount=${detailsInfo.data.totalMoneyAfterVATorDiscount - detailsInfo.data.totalPay}&addInfo=${detailsInfo.data.code + " Thanh toan don hang"}&accountName=${BankInfo.ACCOUNT_NAME}`}
+
+              <div className={styles.pay_container_right}>
+                <div className={styles.bank}>
+                  <Image
+                    src={BankInfo.BANKLOGO}
                     alt="error"
                     width={372}
                     height={288}
                   />
+                  <div>
+                    <p className="darkColor">{BankInfo.BANKNAME}</p>
+                  </div>
                 </div>
-                <div className="">
-                  <div className={styles.pay_container_right}>
-                    <div className={styles.bank}>
-                      <Image
-                        src={BankInfo.BANKLOGO}
-                        alt="error"
-                        width={372}
-                        height={288}
-                      />
-                      <div>
-                        <p className="darkColor">{BankInfo.BANKNAME}</p>
-                      </div>
-                    </div>
-                    <div className={styles.box_flex}>
-                      <p>Chủ tài khoản:</p>
-                      <p className="darkColor">{BankInfo.ACCOUNT_NAME}</p>
-                    </div>
-                    <div className={`row`}>
-                      <div className={`col l-7 c-7 ${styles.box_flex}`}>
-                        <p>Số tài khoản:</p>
-                        <p className="darkColor">{BankInfo.ACCOUNT_NO}</p>
-                      </div>
-                      <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
-                        <Button
-                          onClick={
-                            (event: any) => {
-                              copyText(
-                                BankInfo.ACCOUNT_NO,
-                                event.currentTarget
-                              );
-                            }
-                          }
-                          className={styles.btn_pay}
-                        >
-                          Sao chép
-                        </Button>
-                      </div>
-                    </div>
-                    <div className={`row`}>
-                      <div className={`col l-7 c-7 ${styles.box_flex}`}>
-                        <p>Số tiền:</p>
-                        <p className="darkColor">{toVND(detailsInfo.data.totalAccountAll)}</p>
-                      </div>
-                      <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
-                        <Button
-                          onClick={
-                            (event: any) => {
-                              copyText(
-                                '' + detailsInfo.data.totalAccountAll,
-                                event.currentTarget
-                              );
-                            }
-                          }
-                          className={styles.btn_pay}
-                        >
-                          Sao chép
-                        </Button>
-                      </div>
-                    </div>
-                    <div className={`row`}>
-                      <div className={`col l-7 c-7 ${styles.box_flex}`}>
-                        <p>Nội dung:</p>
-                        <p className="darkColor">{detailsInfo.data.code}</p>
-                      </div>
-                      <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
-                        <Button
-                          onClick={
-                            (event: any) => {
-                              copyText(
-                                detailsInfo.data.code,
-                                event.currentTarget
-                              );
-                            }
-                          }
-                          className={styles.btn_pay}
-                        >
-                          Sao chép
-                        </Button>
-                      </div>
-                    </div>
+                <div className={styles.box_flex}>
+                  <p>Chủ tài khoản:</p>
+                  <p className="darkColor">{BankInfo.ACCOUNT_NAME}</p>
+                </div>
+                <div className={`row`}>
+                  <div className={`col l-7 c-7 ${styles.box_flex}`}>
+                    <p>Số tài khoản:</p>
+                    <p className="darkColor">{BankInfo.ACCOUNT_NO}</p>
+                  </div>
+                  <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
                     <Button
+                      onClick={
+                        (event: any) => {
+                          copyText(
+                            BankInfo.ACCOUNT_NO,
+                            event.currentTarget
+                          );
+                        }
+                      }
+                      className={styles.btn_pay}
+                    >
+                      Sao chép
+                    </Button>
+                  </div>
+                </div>
+                <div className={`row`}>
+                  <div className={`col l-7 c-7 ${styles.box_flex}`}>
+                    <p>Số tiền:</p>
+                    <p className="darkColor">{toVND(detailsInfo.data.totalAccountAll)}</p>
+                  </div>
+                  <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
+                    <Button
+                      onClick={
+                        (event: any) => {
+                          copyText(
+                            '' + detailsInfo.data.totalAccountAll,
+                            event.currentTarget
+                          );
+                        }
+                      }
+                      className={styles.btn_pay}
+                    >
+                      Sao chép
+                    </Button>
+                  </div>
+                </div>
+                <div className={`row`}>
+                  <div className={`col l-7 c-7 ${styles.box_flex}`}>
+                    <p>Nội dung:</p>
+                    <p className="darkColor">{detailsInfo.data.code}</p>
+                  </div>
+                  <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
+                    <Button
+                      onClick={
+                        (event: any) => {
+                          copyText(
+                            detailsInfo.data.code,
+                            event.currentTarget
+                          );
+                        }
+                      }
+                      className={styles.btn_pay}
+                    >
+                      Sao chép
+                    </Button>
+                  </div>
+                </div>
+                <em>
+                  Hệ thống sẽ tự cập nhật trạng thái thanh toán trong vòng 5 phút. Nếu quá thời gian trên mà hệ thống chưa cập nhật, hãy liên hệ nhân viên tư vấn hoặc CSKH để được hỗ trợ.
+                </em>
+                {/* <Button
                       onClick={SetPayments}
                       className={` ${styles.btn_QR}`}
                     >
                       Hủy
-                    </Button>
-                  </div>
-                </div>
+                    </Button> */}
               </div>
             </div>
+          </div>
 
-            <div
-              className={`${styles.container} ${styles.paymentMT} ${styles.height_left}`}
-            >
-              <div className={styles.box_flex}>
-                <Image
-                  src={"/iconscheck.png"}
-                  alt="error"
-                  width={372}
-                  height={288}
-                />
-                <p>Quý khách vui lòng kiểm tra lại thông tin cá nhân.</p>
-              </div>
-              <div className={styles.box_flex}>
-                <p>
-                  Nếu có bất kỳ vấn đề gì với đơn hàng, xin vui lòng liên hệ
-                  ngay qua số điện thoại/Zalo: {detailsInfo.data.customer.assign.phone} để được
-                  hỗ trợ nhanh chóng.
-                </p>
-                <Image
-                  src={'/iconsSupport.png'}
-                  alt="error"
-                  width={372}
-                  height={288}
-                />
-              </div>
-              <div className={styles.box_flex}>
-                <Image
-                  src={"/iconsPayment.png"}
-                  alt="error"
-                  width={372}
-                  height={288}
-                />
-                <p>
-                  Vui lòng thanh toán số tiền trong đơn hàng để chúng tôi có thể
-                  xử lý đơn hàng của Quý khách ngay lập tức.
-                </p>
-              </div>
-              <Button onClick={SetPayments} className={styles.btn_MT}>
-                Thanh toán
-              </Button>
-            </div>
-          </ReactCardFlip>
+          // <div
+          //   className={`${styles.container} ${styles.paymentMT} ${styles.height_left}`}
+          // >
+          //   <div className={styles.box_flex}>
+          //     <Image
+          //       src={"/iconscheck.png"}
+          //       alt="error"
+          //       width={372}
+          //       height={288}
+          //     />
+          //     <p>Quý khách vui lòng kiểm tra lại thông tin cá nhân.</p>
+          //   </div>
+          //   <div className={styles.box_flex}>
+          //     <p>
+          //       Nếu có bất kỳ vấn đề gì với đơn hàng, xin vui lòng liên hệ
+          //       ngay qua số điện thoại/Zalo: {detailsInfo.data.customer.assign.phone} để được
+          //       hỗ trợ nhanh chóng.
+          //     </p>
+          //     <Image
+          //       src={'/iconsSupport.png'}
+          //       alt="error"
+          //       width={372}
+          //       height={288}
+          //     />
+          //   </div>
+          //   <div className={styles.box_flex}>
+          //     <Image
+          //       src={"/iconsPayment.png"}
+          //       alt="error"
+          //       width={372}
+          //       height={288}
+          //     />
+          //     <p>
+          //       Vui lòng thanh toán số tiền trong đơn hàng để chúng tôi có thể
+          //       xử lý đơn hàng của Quý khách ngay lập tức.
+          //     </p>
+          //   </div>
+          //   <Button onClick={SetPayments} className={styles.btn_MT}>
+          //     Thanh toán
+          //   </Button>
+          // </div>
+          //     </ReactCardFlip>
         ) : (
-          <ReactCardFlip flipDirection="horizontal" isFlipped={stateTks}>
-            <div
-              id="QR"
-              className={`${styles.container} ${styles.height_left} ${styles.tks}`}
-            >
-              <div className={styles.Payhead}>
-                <Image
-                  src={imgTks}
-                  className={styles.imgTks}
-                  alt="error"
-                  width={523}
-                  height={599}
-                />
-              </div>
+          <div
+            id="QR"
+            className={`${styles.container} ${styles.height_left} ${styles.tks}`}
+          >
+            <div className={styles.Payhead}>
+              <Image
+                src={imgTks}
+                className={styles.imgTks}
+                alt="error"
+                width={523}
+                height={599}
+              />
             </div>
-
-            <div
-              className={`${styles.container} ${styles.paymentMT} ${styles.height_left} `}
-            >
-              <div className={styles.box_flex}>
-                <Image
-                  src={"/iconsProduct.png"}
-                  alt="error"
-                  width={372}
-                  height={288}
-                />
-                <p>
-                  Thời gian sản xuất dự kiến từ 8-10 ngày. Không tính chủ nhật
-                  và nghỉ lễ.
-                </p>
-              </div>
-
-              <div className={styles.box_flex}>
-                <p>
-                  Nhận hàng được mở hàng kiểm tra. Đúng hàng, đủ số lượng sản
-                  phẩm.
-                </p>
-                <Image
-                  src={"/iconscheck.png"}
-                  alt="error"
-                  width={372}
-                  height={288}
-                />
-              </div>
-              <div className={styles.box_flex}>
-                <Image
-                  src={"/iconsSupport.png"}
-                  alt="error"
-                  width={372}
-                  height={288}
-                />
-                <p>
-                  Nếu gặp sự cố trong quá trình kiểm hàng và giao nhận hàng.
-                  Mình liên hệ lại qua số điện thoại/ Zalo:{" "}
-                  {detailsInfo.data.customer.assign.phone} để có thể xử lý kịp thời .
-                </p>
-              </div>
-            </div>
-          </ReactCardFlip>
+          </div>
         )}
 
         <div className={`${styles.container} ${styles.transport}`}>
           <p className="darkColor">Vận chuyển và nhận hàng</p>
-          <p>Mã vận chuyển : {detailsInfo.data.ships.track || "Chưa có thông tin"}</p>
+
+          {
+            detailsInfo.data.ships.track ? (
+              <p>Mã vận chuyển : {detailsInfo.data.ships.track}</p>
+            ) : (
+              <p></p>
+            )
+
+          }
+
+
+
           <p>Đơn vị vận chuyển : {detailsInfo.data.ships.delivery?.text || "Chưa có thông tin"}</p>
           <p>
             Dự kiến nhận hàng :{" "}
@@ -729,5 +733,6 @@ export default function Home({ searchParams }: any) {
         </div>
       </div>
     </div>
+
   );
 }

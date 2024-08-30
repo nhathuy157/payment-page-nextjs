@@ -4,6 +4,22 @@
   display: flex;
   justify-content: space-between;
 }
+.box_btn {
+  display: flex;
+  /* justify-content: center; */
+  /* align-items: center; */
+  gap: 1.25rem;
+  padding: 0.875rem;
+  border: 0.125rem solid #4ccad5;
+  background-color: rgba(76, 202, 213, 0.2);
+  width: fit-content;
+  border-radius: 0.313rem;
+
+  /* margin-right: 25px; */
+}
+.box_btn p {
+  font-size: 1.065rem;
+}
 .nav {
   display: flex;
   /* gap: 20px; */
@@ -40,17 +56,12 @@
   /* margin-right: 30px; */
 }
 @media (max-width: 739px) {
-  .nav p {
-    display: none;
-  }
   .nav {
     gap: 0;
   }
 }
 @media (max-width: 1022px) {
-  .nav p {
-    display: none;
-  }
+
 }
 @media (min-width: 740px) and (max-width: 1023px) {
 }

@@ -16,6 +16,7 @@ const dataRef: any = {
     sologan: "Đơn giản là đẹp",
     favicon: "/logoAoThun247.png",
     logo: "/logoAoThun247.png",
+    CSKH: "0853511234",
     bank: {
       BANKID: "VPB",
       BANKNAME: "VPBank - Ngân hàng TMCP Việt Nam Thịnh Vượng",
@@ -30,6 +31,7 @@ const dataRef: any = {
     sologan: "Giải pháp đồng phục doanh nghiệp",
     favicon: "/logoDPBTP.png",
     logo: "/logoDPBTP.png",
+    CSKH: "0961887777",
     bank: {
       BANKID: "VCB",
       BANKNAME: "Vietcombank - Ngân hàng TMCP Ngoại Thương Việt Nam",
@@ -43,7 +45,8 @@ const dataRef: any = {
     imgTks: "/TTtks.png",
     sologan: "Giải pháp đồng phục chuyên nghiệp",
     favicon: "/TTtks.png",
-    logo: "/logodongphucTT.png",
+    logo: "/logodongphucTT.jpg",
+    CSKH: "0889581234",
     bank: {
       BANKID: "VCB",
       BANKNAME: "Vietcombank - Ngân hàng TMCP Ngoại Thương Việt Nam",
@@ -57,7 +60,8 @@ const dataRef: any = {
     imgTks: "/TTtks.png",
     sologan: "Giải pháp đồng phục chuyên nghiệp",
     favicon: "/logodongphucTT.png",
-    logo: "/logodongphucTT.png",
+    logo: "/logodongphucTT.jpg",
+    CSKH: "0889581234",
     bank: {
       BANKID: "VPB",
       BANKNAME: "VPBank - Ngân hàng TMCP Việt Nam Thịnh Vượng",

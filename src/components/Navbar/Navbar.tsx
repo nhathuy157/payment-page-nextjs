@@ -18,6 +18,8 @@ export default function Navbar() {
     setLogo(dataRef[ref].logo);
   }, [logo]);
 
+  
+
   return (
     <div className={classes.container}>
       <div className={`grid wide ${classes.nav}`}>
@@ -29,6 +31,10 @@ export default function Navbar() {
             priority
             height={288}
           />
+        </div>
+        <div className={`${classes.box_btn}`}>
+          <p className="">Trạng thái :</p>
+          <p id="statusText" className="textTitle"></p>
         </div>
       </div>
     </div>

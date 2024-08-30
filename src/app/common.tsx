@@ -1,11 +1,17 @@
 
-async function getOrder(order_hash: string){
-    // const response = await fetch(`https://s.btpc.vn/backend/api/getOrderDetail?order_hash=${order_hash}`);
-    const response = await fetch(`https://apidonhang.aothun247.vn/getOrderDetail?order_hash=${order_hash}`);
-    const res_json = await response.json();
-    if(!response.ok) 
-        throw new Error(JSON.stringify(res_json));
-    return res_json;
+async function getOrder(order_hash: string) {
+  try {
+       const response = await fetch(`https://sapi.btpc.vn/v1/api/getOrderDetail?order_hash=${order_hash}`);
+     // const response = await fetch(`https://apidonhang.thientrang.vn/getOrderDetail?order_hash=${order_hash}`);
+      const res_json = await response.json();
+      if (!response.ok) {
+          throw new Error(JSON.stringify(res_json));
+      }
+      return res_json;
+  } catch (error) {
+      console.error("Error fetching order details:", error);
+      throw error;
+  }
 }
 
 declare global {

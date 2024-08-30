@@ -16,7 +16,7 @@ function toVND(number: number) {
     currency: "VND",
   });
 }
-const showAlert = (text : any, callback : any) => {
+const showAlert = (text: any, callback: any) => {
   document.body.style.backgroundColor = "#DFE3EF";
   Swal.fire({
     title: "Thông báo",
@@ -50,7 +50,7 @@ function redirectToBrandPage() {
 
 
 
-export default function DetailsProduct({ searchParams }: any) {
+export default function DetailsProduct() {
 
 
 
@@ -256,54 +256,156 @@ export default function DetailsProduct({ searchParams }: any) {
     }
   });
 
+  // const [loading, setLoading] = useState(true);
+  // useEffect(() => {
+  //   if(window.detailsInfo) {setDetailsInfo(window.detailsInfo); setLoading(false);}
+  //   else getOrder(searchParams.order_hash).then(setDetailsInfo).then(() => {
+  //     document.title = detailsInfo.data?.code;
+  //     setLoading(false);
+  //   })
+  //   return () => { }
+  // }, []);
 
-  
+
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (window.detailsInfo) {
+  //         setDetailsInfo(window.detailsInfo);
+  //         setLoading(false);
+  //       } else {
+  //         const detailsInfo = await getOrder(searchParams.order_hash);
+  //         setDetailsInfo(detailsInfo);
+
+  //         // Thay đổi tiêu đề của tài liệu HTML
+  //         document.title = detailsInfo.data?.code;
+  //         setLoading(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error showing alert:", error);
+  //       console.log(searchParams.order_hash);
+  //       showAlert("Không tìm thấy sản phẩm ! ", (result: { isConfirmed: any;  }) => {
+  //         if (result.isConfirmed) {
+  //           redirectToBrandPage(); // reload lại trang
+  //         }
+
+  //       });
+
+  //       setLoading(false); // Đảm bảo rằng loading được tắt ngay cả khi có lỗi
+  //     }
+  //   };
+
+  //   fetchData();
+
+  //   return () => { };
+  // }, [
+
+  // ]);
+
+
+
+
+  // if (loading) {
+  //   return <LoadingSpinner />;
+  // }
+  // // debugger
+  // const item = detailsInfo.data.products[searchParams.index];
+  // if (!item) {
+  //   showAlert("Không tìm thấy sản phẩm !  ", (result: { isConfirmed: any }) => {
+  //     if (result.isConfirmed) {
+  //       redirectToBrandPage(); // reload lại trang
+  //     }
+
+
+  //   });
+  //   return null;
+  // }
+
   useEffect(() => {
-    const fetchDetails = async () => {
+    const fetchData = async () => {
       try {
+        const urlParams = new URLSearchParams(window.location.search);
+        let orderHash = urlParams.get('order_hash');
+        const productIndex = urlParams.get('index');
+  
+        if (!orderHash) {
+          console.warn("Order hash is missing, trying to retrieve it from URL...");
+          orderHash = urlParams.get('order_hash');
+        }
+  
+        // Nếu `order_hash` vẫn không tồn tại hoặc không hợp lệ
+        if (!orderHash) {
+          showAlert("Order hash không hợp lệ!", (result: { isConfirmed: any }) => {
+            if (result.isConfirmed) {
+              redirectToBrandPage();
+            }
+          });
+          return; // Kết thúc hàm nếu `order_hash` không hợp lệ
+        }
+  
         if (window.detailsInfo) {
           setDetailsInfo(window.detailsInfo);
-          setLoading(false);
         } else {
-          const detailsInfo = await getOrder(searchParams.order_hash);
+          const detailsInfo = await getOrder(orderHash);
+  
+          if (!detailsInfo || !detailsInfo.data || !detailsInfo.data.products) {
+            showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any }) => {
+              if (result.isConfirmed) {
+                redirectToBrandPage();
+              }
+            });
+            return;
+          }
+  
           setDetailsInfo(detailsInfo);
-          setLoading(false);
+          document.title = detailsInfo.data?.code;
         }
       } catch (error) {
         console.error("Error fetching order details:", error);
-        // Handle the error (e.g., show an error message to the user)
-        setLoading(false);
-        showAlert("Không tìm thấy sản phẩm ! " , (result: { isConfirmed: any; isnotConfirmed: any; }) => {
+  
+        showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any }) => {
           if (result.isConfirmed) {
-            redirectToBrandPage(); // reload lại trang
+            redirectToBrandPage();
           }
-          
-      });
+        });
+      } finally {
+        setLoading(false);
       }
     };
-
-    fetchDetails();
-
-    return () => { };
+  
+    fetchData();
   }, []);
-
+  
+  
 
   if (loading) {
     return <LoadingSpinner />;
   }
-  // debugger
-  const item = detailsInfo.data.products[searchParams.index];
-  if (!item) {
-    showAlert("Không tìm thấy sản phẩm !  " , (result: { isConfirmed: any}) => {
+  let item: any;
+  const urlParams = new URLSearchParams(window.location.search);
+  let productIndex = urlParams.get('index');
+  
+  // Convert `productIndex` to a number and handle the case where it might be `null`
+  const itemIndex = productIndex !== null ? parseInt(productIndex, 10) : -1; // Using -1 as an invalid index
+  
+  // Validate the index before using it
+  if (itemIndex >= 0 && itemIndex < detailsInfo.data.products.length) {
+     item = detailsInfo.data.products[itemIndex];
+    
+    // Continue processing the `item`
+    // ...
+  } else {
+    showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any }) => {
       if (result.isConfirmed) {
         redirectToBrandPage(); // reload lại trang
       }
-      
-      
-  });
+    });
+    return null;
   }
+  
+
   return (
     <div className={classes.box_padding}>
       <div className={`grid wide ${classes.container}`}>
