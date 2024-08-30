@@ -279,6 +279,8 @@ export default function Home({ searchParams }: any) {
           }
         }, "error");
       } finally {
+        
+        
         setLoading(false);
         fetting = false;
       }

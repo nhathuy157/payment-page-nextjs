@@ -1,8 +1,8 @@
 
 async function getOrder(order_hash: string) {
   try {
-       const response = await fetch(`https://sapi.btpc.vn/v1/api/getOrderDetail?order_hash=${order_hash}`);
-     // const response = await fetch(`https://apidonhang.thientrang.vn/getOrderDetail?order_hash=${order_hash}`);
+      // const response = await fetch(`https://sapi.btpc.vn/v1/api/getOrderDetail?order_hash=${order_hash}`);
+     const response = await fetch(`https://apidonhang.thientrang.vn/getOrderDetail?order_hash=${order_hash}`);
       const res_json = await response.json();
       if (!response.ok) {
           throw new Error(JSON.stringify(res_json));

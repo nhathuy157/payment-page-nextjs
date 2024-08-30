@@ -33,7 +33,7 @@ export async function generateMetadata({ params, searchParams }: any){
   
   
 
-  const image = data?.data.image || "https://repository-images.githubusercontent.com/841320218/a7f67794-6ba3-4b3b-a764-a82e4b101476";
+  const image = data?.data.products.image[0] || "https://repository-images.githubusercontent.com/841320218/a7f67794-6ba3-4b3b-a764-a82e4b101476";
   console.log(description);
   // Tạo meta ở đây
   return {
