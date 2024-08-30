@@ -58,6 +58,20 @@ function copyText(text: string, btn: any) {
   document.body.removeChild(textarea);
   btn.innerText = "Đã sao chép";
 }
+function redirectToBrandPage() {
+  // Extract the base URL from the current URL
+  const currentUrl = window.location.href;
+  const baseUrl = currentUrl.split('/')[2]; // Get the domain part of the URL
+
+  // Find the corresponding brand
+  const brandKey = Object.keys(dataRef).find(key => dataRef[key].url.includes(baseUrl)) || 'default';
+
+  // Get the URL to redirect to
+  const redirectUrl = dataRef[brandKey].url;
+
+  // Redirect to the brand's URL
+  window.location.href = redirectUrl;
+}
 
 
 export default function Home({ searchParams }: any) {
@@ -304,7 +318,12 @@ export default function Home({ searchParams }: any) {
         const test = await getOrder(searchParams.order_hash);
         setDetailsInfo(test);
       } catch (error) {
-        console.log("error");
+       // console.log("error");
+        showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any }) => {
+          if (result.isConfirmed) {
+            redirectToBrandPage(); // reload lại trang
+          }
+        },"error");
       } finally {
         setLoading(false);
         fetting = false;
@@ -341,7 +360,7 @@ export default function Home({ searchParams }: any) {
               if (result.isConfirmed) {
                 window.location.reload(); // reload lại trang
               }
-            });
+            }, "success");
           }
           else {
             window.location.reload(); // reload lại trang
@@ -385,11 +404,11 @@ export default function Home({ searchParams }: any) {
   }
 
 
-  const showAlert = (text: any, callback: any) => {
+  const showAlert = (text: any, callback: any, type :any) => {
     Swal.fire({
       title: "Thông báo",
       text: text,
-      icon: "success",
+      icon: type,
       confirmButtonText: "OK",
       showConfirmButton: true,
       allowOutsideClick: false, // Ngăn không cho đóng bằng cách nhấp ra ngoài
