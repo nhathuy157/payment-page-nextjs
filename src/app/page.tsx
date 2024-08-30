@@ -117,133 +117,87 @@ export default function Home({ searchParams }: any) {
       },
       "products": [
         {
-          "name": "Bộ an ninh",
-          "number": 20,
-          "color": "57",
+          "name": "Áo sơ mi nữ tay dài",
+          "number": 3,
+          "color": "T107 LÔ 17-2",
           "print": null,
-          "embroider": "Thêu 3 vị trí",
-          "mix": "phối như maket",
-          "money": 680000,
-          "sizeText": "10L, 10XL",
+          "embroider": null,
+          "mix": null,
+          "money": 340000,
+          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109223167426560/20240603.665d82de33cf5.png?ex=66d22fb8&is=66d0de38&hm=f93d399ffdf5c52b9ef188ba2f20b2651d15b288aca9642df0c46d97db267fcd&",
+          "sizeText": "3KXĐ",
           "material": {
-            "name": "Cotton lạnh"
+            "name": "Kate Mỹ"
           }
         },
         {
-          "name": "Tạp dề ngắn pha chế",
-          "number": 10,
-          "color": "297",
+          "name": "Áo sơ mi nam tay dài",
+          "number": 1,
+          "color": "T107 LÔ 17-2",
           "print": null,
           "embroider": null,
-          "mix": "viền túi màu 85 kaki thun",
-          "money": 110000,
-          "sizeText": "",
+          "mix": null,
+          "money": 360000,
+          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109340108820543/20240603.665d82de61f5a.png?ex=66d22fd4&is=66d0de54&hm=ffa45e6af9a2b81e276490b86ac655dbcef9d689c776d75ddf53fad16fca6ab7&",
+          "sizeText": "1KXĐ",
+          "material": {
+            "name": "Kate Mỹ"
+          }
+        },
+        {
+          "name": "Quần tây nữ ống suông",
+          "number": 3,
+          "color": "SỐ 8",
+          "print": null,
+          "embroider": null,
+          "mix": null,
+          "money": 330000,
+          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109170218537040/20240603.665d82de1c4f3.png?ex=66d22fac&is=66d0de2c&hm=00a1eb9eed418680a9b7af0d2ed77e21bc1a92dd3621f4b1a30cc1bd46abf910&",
+          "sizeText": "3KXĐ",
           "material": {
             "name": "Kaki Thun"
           }
         },
         {
-          "name": "Áo sơ mi nữ tay dài NV kinh doanh",
-          "number": 4,
-          "color": "MR55-1A",
+          "name": "Áo vest Nữ form BLAZER tay dài 1 lớp",
+          "number": 3,
+          "color": "SỐ 8",
           "print": null,
           "embroider": null,
           "mix": null,
-          "money": 410000,
-          "sizeText": "4M",
+          "money": 700000,
+          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109286392500276/20240603.665d82de4888f.png?ex=66d22fc8&is=66d0de48&hm=31637bbcd85eb981f0f942396ea4029fab060a60ae6e01fe90f3f57b24e9667f&",
+          "sizeText": "3KXĐ",
           "material": {
-            "name": "Kate Model"
+            "name": "Kaki Thun"
           }
         },
         {
-          "name": "Áo sơ mi cổ tròn quản lí FB",
+          "name": "Áo vest nam tay dài 1 lớp",
           "number": 2,
-          "color": "MRS 75-6",
+          "color": "SỐ 8",
           "print": null,
           "embroider": null,
           "mix": null,
-          "money": 410000,
-          "sizeText": "2M",
+          "money": 1100000,
+          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109404331868180/20240603.665d82de79297.png?ex=66d22fe4&is=66d0de64&hm=0dae7237fb1d8168b6aee3b47e5d1ba066eb768c6b1aea670fa7d7d78211c3f4&",
+          "sizeText": "2KXĐ",
           "material": {
-            "name": "Kate Model"
-          }
-        },
-        {
-          "name": "Áo sơ mi nam tay ngắn",
-          "number": 10,
-          "color": "MRS 75-6",
-          "print": null,
-          "embroider": null,
-          "mix": null,
-          "money": 400000,
-          "sizeText": "2M, 6L, 2XL",
-          "material": {
-            "name": "Kate Model"
-          }
-        },
-        {
-          "name": "Áo vest nữ NV kinh doanh tay dài 2 lớp",
-          "number": 4,
-          "color": "TRS 105-6",
-          "print": null,
-          "embroider": null,
-          "mix": null,
-          "money": 1800000,
-          "sizeText": "4M",
-          "material": {
-            "name": "Cashmere italy"
-          }
-        },
-        {
-          "name": "Chân váy bút chì form dài có lót NV kinh doanh",
-          "number": 4,
-          "color": "TRS 105-6",
-          "print": null,
-          "embroider": null,
-          "mix": null,
-          "money": 430000,
-          "sizeText": "4M",
-          "material": {
-            "name": "Cashmere italy"
-          }
-        },
-        {
-          "name": "Áo vest nữ tay dài 2 lớp quản lí FB",
-          "number": 2,
-          "color": "TRS 105-6",
-          "print": null,
-          "embroider": null,
-          "mix": "như maket màu 85 kaki thun",
-          "money": 1500000,
-          "sizeText": "2M",
-          "material": {
-            "name": "Cashmere italy"
-          }
-        },
-        {
-          "name": "Quần tây nữ quản lí FB",
-          "number": 2,
-          "color": "TRS 105-6",
-          "print": null,
-          "embroider": null,
-          "mix": null,
-          "money": 450000,
-          "sizeText": "2M",
-          "material": {
-            "name": "Cashmere italy"
+            "name": "Kaki Thun"
           }
         },
         {
           "name": "Quần tây nam",
-          "number": 10,
-          "color": "QT 808-1",
+          "number": 2,
+          "color": "SỐ 8",
           "print": null,
           "embroider": null,
           "mix": null,
-          "money": 450000,
-          "sizeText": "2M, 6L, 2XL",
+          "money": 350000,
+          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109472992759858/20240603.665d82de929c6.png?ex=66d22ff4&is=66d0de74&hm=5d59b6429415ab521fc061d007de4cc55c757cc9d22f1181b3c81a48d9e299f1&",
+          "sizeText": "2KXĐ",
           "material": {
-            "name": "Cashmere italy"
+            "name": "Kaki Thun"
           }
         }
       ],
@@ -318,12 +272,12 @@ export default function Home({ searchParams }: any) {
         const test = await getOrder(searchParams.order_hash);
         setDetailsInfo(test);
       } catch (error) {
-       // console.log("error");
+        // console.log("error");
         showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any }) => {
           if (result.isConfirmed) {
             redirectToBrandPage(); // reload lại trang
           }
-        },"error");
+        }, "error");
       } finally {
         setLoading(false);
         fetting = false;
@@ -404,7 +358,7 @@ export default function Home({ searchParams }: any) {
   }
 
 
-  const showAlert = (text: any, callback: any, type :any) => {
+  const showAlert = (text: any, callback: any, type: any) => {
     Swal.fire({
       title: "Thông báo",
       text: text,

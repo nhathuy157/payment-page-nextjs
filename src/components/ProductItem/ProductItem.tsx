@@ -3,6 +3,7 @@ import classes from "./ProductItem.module.css";
 import Button from "../Button/Button";
 import Link from "next/link";
 export default function ProductItem(props: any) {
+  
   return (
     <Link
       href={"/DetailsProduct" + window.location.search + "&index=" + props.index}
@@ -11,7 +12,7 @@ export default function ProductItem(props: any) {
       <div className={classes.inf}>
         <div className={classes.box_img}>
           <Image
-            src={props.content.products.image || '/no-pictures.png'}
+            src={props.content.image || '/no-pictures.png'}
             alt="error"
             width={372}
             height={288}
