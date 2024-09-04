@@ -11,6 +11,7 @@
 
 const dataRef: any = {
   aothun247: {
+    name: "AoThun247",
     url: "https://aothun247.vn/",
     imgTks: "/Aothun247tks.png",
     sologan: "Đơn giản là đẹp",
@@ -28,6 +29,7 @@ const dataRef: any = {
     },
   },
   dongphucbtp: {
+    name: "Bảo Thiên Phước",
     url: "https://dongphucbtp.vn/",
     imgTks: "/BTPtks.png",
     sologan: "Giải pháp đồng phục doanh nghiệp",
@@ -45,13 +47,14 @@ const dataRef: any = {
     },
   },
   thientrang: {
+    name: "Thiên Trang",
     url: "https://thientrang.vn/",
     imgTks: "/TTtks.png",
     sologan: "Giải pháp đồng phục chuyên nghiệp",
     favicon: "/TTtks.png",
     logo: "/logodongphucTT.jpg",
     CSKH: "0889581234",
-    imgOder: "imgOderBTP.jpg",
+    imgOder: "imgOderTT.jpg",
     API : "https://apidonhang.thientrang.vn/getOrderDetail?order_hash=",
     bank: {
       BANKID: "VCB",
@@ -62,13 +65,14 @@ const dataRef: any = {
     },
   },
   default: {
+    name: "Thiên Trang",
     url: "https://thientrang.vn/",
     imgTks: "/TTtks.png",
     sologan: "Giải pháp đồng phục chuyên nghiệp",
     favicon: "/logodongphucTT.png",
     logo: "/logodongphucTT.jpg",
     CSKH: "0889581234",
-    imgOder: "imgOderBTP.jpg",
+    imgOder: "imgOderTT.jpg",
     API : "https://apidonhang.thientrang.vn/getOrderDetail?order_hash=",
     bank: {
       BANKID: "VPB",

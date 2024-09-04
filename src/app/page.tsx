@@ -10,7 +10,8 @@ import dataRef from "@/app/Config/config";
 import ReactCardFlip from "react-card-flip";
 import Navbar from "@/components/Navbar/Navbar";
 import getOrder from "./common";
-import LoadingSpinner from '@/components/Loading/LoadingSpinner';
+import LoadingSpinner from "@/components/Loading/LoadingSpinner";
+import Popup from "@/components/Popup/Popup";
 
 import { Result } from "postcss";
 import { debug, error } from "console";
@@ -38,7 +39,7 @@ function openZalo(phone: string) {
 }
 function copyText(text: string, btn: any) {
   // Tạo một textarea tạm thời để chứa văn bản cần sao chép
-  const textarea = document.createElement('textarea');
+  const textarea = document.createElement("textarea");
   textarea.value = text;
   document.body.appendChild(textarea);
 
@@ -48,10 +49,10 @@ function copyText(text: string, btn: any) {
 
   // Thực hiện sao chép
   try {
-    document.execCommand('copy');
+    document.execCommand("copy");
     // alert('Nội dung đã được sao chép!');
   } catch (err) {
-    console.error('Không thể sao chép nội dung:', err);
+    console.error("Không thể sao chép nội dung:", err);
   }
 
   // Xóa textarea sau khi sao chép
@@ -61,10 +62,12 @@ function copyText(text: string, btn: any) {
 function redirectToBrandPage() {
   // Extract the base URL from the current URL
   const currentUrl = window.location.href;
-  const baseUrl = currentUrl.split('/')[2]; // Get the domain part of the URL
+  const baseUrl = currentUrl.split("/")[2]; // Get the domain part of the URL
 
   // Find the corresponding brand
-  const brandKey = Object.keys(dataRef).find(key => dataRef[key].url.includes(baseUrl)) || 'default';
+  const brandKey =
+    Object.keys(dataRef).find((key) => dataRef[key].url.includes(baseUrl)) ||
+    "default";
 
   // Get the URL to redirect to
   const redirectUrl = dataRef[brandKey].url;
@@ -81,11 +84,10 @@ const showAlert = (text: any, callback: any, type: any) => {
     confirmButtonText: "OK",
     showConfirmButton: true,
     allowOutsideClick: false, // Ngăn không cho đóng bằng cách nhấp ra ngoài
-    allowEscapeKey: false,    // Ngăn không cho đóng bằng phím Esc
-    showCancelButton: false
+    allowEscapeKey: false, // Ngăn không cho đóng bằng phím Esc
+    showCancelButton: false,
   }).then(callback);
 };
-
 
 export default function Home({ searchParams }: any) {
   const [statePayment, setsStatePayment] = useState(true);
@@ -94,162 +96,171 @@ export default function Home({ searchParams }: any) {
   const [loading, setLoading] = useState(true);
   const [isStop, setIsStop] = useState(false);
   const [error, setError] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
+
   var [detailsInfo, setDetailsInfo] = useState({
-    "success": true,
-    "data": {
-      "sample": true,
-      "totalAccountAll": -579020,
-      "totalMoney": 38480000,
-      "discount": 0,
-      "accept_produce_at": 1719224171,
-      "deadline": 1720026000,
-      "code": "EF24D9",
-      "totalVAT": 3078400,
-      "totalMoneyAfterVATorDiscount": 41558400,
-      "totalProduct": 68,
-      "totalPay": 42137420,
-      "cancel_at": null,
-      "delivered_at": 1721011179,
-      "produced_at": 1720690534,
-      "sent_at": 1720691298,
-      "customer": {
-        "name": "Quỳnh Mỹ",
-        "phone": "0367863984",
-        "address": "tòa Epic, ngõ 19 Duy Tân, Cầu Giấy, Hà Nội",
-        "taxCode": null,
-        "taxName": null,
-        "taxAddress": null,
-        "total_unpaid": 63870719,
-        "orders_count": 4,
-        "unsent_orders_count": 0,
-        "assign": {
-          "first_name": "Minh Giang",
-          "last_name": null,
-          "phone": "0961887777"
-        }
+    success: true,
+    data: {
+      sample: true,
+      totalAccountAll: -579020,
+      totalMoney: 38480000,
+      discount: 0,
+      accept_produce_at: 1719224171,
+      deadline: 1720026000,
+      code: "EF24D9",
+      totalVAT: 3078400,
+      totalMoneyAfterVATorDiscount: 41558400,
+      totalProduct: 68,
+      totalPay: 42137420,
+      cancel_at: null,
+      delivered_at: 1721011179,
+      produced_at: 1720690534,
+      sent_at: 1720691298,
+      customer: {
+        name: "Quỳnh Mỹ",
+        phone: "0367863984",
+        address: "tòa Epic, ngõ 19 Duy Tân, Cầu Giấy, Hà Nội",
+        taxCode: null,
+        taxName: null,
+        taxAddress: null,
+        total_unpaid: 63870719,
+        orders_count: 4,
+        unsent_orders_count: 0,
+        assign: {
+          first_name: "Minh Giang",
+          last_name: null,
+          phone: "0961887777",
+        },
       },
-      "products": [
+      products: [
         {
-          "name": "Áo sơ mi nữ tay dài",
-          "number": 3,
-          "color": "T107 LÔ 17-2",
-          "print": null,
-          "embroider": null,
-          "mix": null,
-          "money": 340000,
-          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109223167426560/20240603.665d82de33cf5.png?ex=66d22fb8&is=66d0de38&hm=f93d399ffdf5c52b9ef188ba2f20b2651d15b288aca9642df0c46d97db267fcd&",
-          "sizeText": "3KXĐ",
-          "material": {
-            "name": "Kate Mỹ"
-          }
+          name: "Áo sơ mi nữ tay dài",
+          number: 3,
+          color: "T107 LÔ 17-2",
+          print: null,
+          embroider: null,
+          mix: null,
+          money: 340000,
+          image:
+            "https://cdn.discordapp.com/attachments/1122918247751241838/1247109223167426560/20240603.665d82de33cf5.png?ex=66d22fb8&is=66d0de38&hm=f93d399ffdf5c52b9ef188ba2f20b2651d15b288aca9642df0c46d97db267fcd&",
+          sizeText: "3KXĐ",
+          material: {
+            name: "Kate Mỹ",
+          },
         },
         {
-          "name": "Áo sơ mi nam tay dài",
-          "number": 1,
-          "color": "T107 LÔ 17-2",
-          "print": null,
-          "embroider": null,
-          "mix": null,
-          "money": 360000,
-          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109340108820543/20240603.665d82de61f5a.png?ex=66d22fd4&is=66d0de54&hm=ffa45e6af9a2b81e276490b86ac655dbcef9d689c776d75ddf53fad16fca6ab7&",
-          "sizeText": "1KXĐ",
-          "material": {
-            "name": "Kate Mỹ"
-          }
+          name: "Áo sơ mi nam tay dài",
+          number: 1,
+          color: "T107 LÔ 17-2",
+          print: null,
+          embroider: null,
+          mix: null,
+          money: 360000,
+          image:
+            "https://cdn.discordapp.com/attachments/1122918247751241838/1247109340108820543/20240603.665d82de61f5a.png?ex=66d22fd4&is=66d0de54&hm=ffa45e6af9a2b81e276490b86ac655dbcef9d689c776d75ddf53fad16fca6ab7&",
+          sizeText: "1KXĐ",
+          material: {
+            name: "Kate Mỹ",
+          },
         },
         {
-          "name": "Quần tây nữ ống suông",
-          "number": 3,
-          "color": "SỐ 8",
-          "print": null,
-          "embroider": null,
-          "mix": null,
-          "money": 330000,
-          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109170218537040/20240603.665d82de1c4f3.png?ex=66d22fac&is=66d0de2c&hm=00a1eb9eed418680a9b7af0d2ed77e21bc1a92dd3621f4b1a30cc1bd46abf910&",
-          "sizeText": "3KXĐ",
-          "material": {
-            "name": "Kaki Thun"
-          }
+          name: "Quần tây nữ ống suông",
+          number: 3,
+          color: "SỐ 8",
+          print: null,
+          embroider: null,
+          mix: null,
+          money: 330000,
+          image:
+            "https://cdn.discordapp.com/attachments/1122918247751241838/1247109170218537040/20240603.665d82de1c4f3.png?ex=66d22fac&is=66d0de2c&hm=00a1eb9eed418680a9b7af0d2ed77e21bc1a92dd3621f4b1a30cc1bd46abf910&",
+          sizeText: "3KXĐ",
+          material: {
+            name: "Kaki Thun",
+          },
         },
         {
-          "name": "Áo vest Nữ form BLAZER tay dài 1 lớp",
-          "number": 3,
-          "color": "SỐ 8",
-          "print": null,
-          "embroider": null,
-          "mix": null,
-          "money": 700000,
-          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109286392500276/20240603.665d82de4888f.png?ex=66d22fc8&is=66d0de48&hm=31637bbcd85eb981f0f942396ea4029fab060a60ae6e01fe90f3f57b24e9667f&",
-          "sizeText": "3KXĐ",
-          "material": {
-            "name": "Kaki Thun"
-          }
+          name: "Áo vest Nữ form BLAZER tay dài 1 lớp",
+          number: 3,
+          color: "SỐ 8",
+          print: null,
+          embroider: null,
+          mix: null,
+          money: 700000,
+          image:
+            "https://cdn.discordapp.com/attachments/1122918247751241838/1247109286392500276/20240603.665d82de4888f.png?ex=66d22fc8&is=66d0de48&hm=31637bbcd85eb981f0f942396ea4029fab060a60ae6e01fe90f3f57b24e9667f&",
+          sizeText: "3KXĐ",
+          material: {
+            name: "Kaki Thun",
+          },
         },
         {
-          "name": "Áo vest nam tay dài 1 lớp",
-          "number": 2,
-          "color": "SỐ 8",
-          "print": null,
-          "embroider": null,
-          "mix": null,
-          "money": 1100000,
-          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109404331868180/20240603.665d82de79297.png?ex=66d22fe4&is=66d0de64&hm=0dae7237fb1d8168b6aee3b47e5d1ba066eb768c6b1aea670fa7d7d78211c3f4&",
-          "sizeText": "2KXĐ",
-          "material": {
-            "name": "Kaki Thun"
-          }
+          name: "Áo vest nam tay dài 1 lớp",
+          number: 2,
+          color: "SỐ 8",
+          print: null,
+          embroider: null,
+          mix: null,
+          money: 1100000,
+          image:
+            "https://cdn.discordapp.com/attachments/1122918247751241838/1247109404331868180/20240603.665d82de79297.png?ex=66d22fe4&is=66d0de64&hm=0dae7237fb1d8168b6aee3b47e5d1ba066eb768c6b1aea670fa7d7d78211c3f4&",
+          sizeText: "2KXĐ",
+          material: {
+            name: "Kaki Thun",
+          },
         },
         {
-          "name": "Quần tây nam",
-          "number": 2,
-          "color": "SỐ 8",
-          "print": null,
-          "embroider": null,
-          "mix": null,
-          "money": 350000,
-          "image": "https://cdn.discordapp.com/attachments/1122918247751241838/1247109472992759858/20240603.665d82de929c6.png?ex=66d22ff4&is=66d0de74&hm=5d59b6429415ab521fc061d007de4cc55c757cc9d22f1181b3c81a48d9e299f1&",
-          "sizeText": "2KXĐ",
-          "material": {
-            "name": "Kaki Thun"
-          }
-        }
+          name: "Quần tây nam",
+          number: 2,
+          color: "SỐ 8",
+          print: null,
+          embroider: null,
+          mix: null,
+          money: 350000,
+          image:
+            "https://cdn.discordapp.com/attachments/1122918247751241838/1247109472992759858/20240603.665d82de929c6.png?ex=66d22ff4&is=66d0de74&hm=5d59b6429415ab521fc061d007de4cc55c757cc9d22f1181b3c81a48d9e299f1&",
+          sizeText: "2KXĐ",
+          material: {
+            name: "Kaki Thun",
+          },
+        },
       ],
-      "works": [],
-      "ships": {
-        "name": "Quỳnh Mỹ",
-        "phone": "0367863984",
-        "address": "tòa Epic, ngõ 19 Duy Tân, Cầu Giấy, Hà Nội",
-        "freeShip": true,
-        "track": "1755954288671",
-        "description": {
-          "status": 501,
-          "cod": 0,
-          "fee": 311962,
-          "ShippingOrderCosts": [
+      works: [],
+      ships: {
+        name: "Quỳnh Mỹ",
+        phone: "0367863984",
+        address: "tòa Epic, ngõ 19 Duy Tân, Cầu Giấy, Hà Nội",
+        freeShip: true,
+        track: "1755954288671",
+        description: {
+          status: 501,
+          cod: 0,
+          fee: 311962,
+          ShippingOrderCosts: [
             {
-              "PaymentChannelID": 1,
-              "Cost": 311962
-            }
+              PaymentChannelID: 1,
+              Cost: 311962,
+            },
           ],
-          "note": "",
-          "noteCode": null,
-          "CustomerName": "Quỳnh Mỹ",
-          "CustomerPhone": "0367863984",
-          "ShippingAddress": "tòa Epic ngõ 19"
+          note: "",
+          noteCode: null,
+          CustomerName: "Quỳnh Mỹ",
+          CustomerPhone: "0367863984",
+          ShippingAddress: "tòa Epic ngõ 19",
         },
-        "time_received": 1721011179,
-        "delivery": {
-          "code": "VTP",
-          "text": "Viettel Post"
-        }
+        time_received: 1721011179,
+        delivery: {
+          code: "VTP",
+          text: "Viettel Post",
+        },
       },
-      "status": {
-        "text": "Đã gửi"
-      }
-    }
+      status: {
+        text: "Đã gửi",
+      },
+    },
   });
-
-
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -274,81 +285,102 @@ export default function Home({ searchParams }: any) {
   //   })();
   // }, [searchParams.order_hash]);
 
- 
-  
   useEffect(() => {
     (async () => {
       if (fetting) return;
       fetting = true;
-  
+
       try {
         const search = new URLSearchParams(window.location.search);
         const searchParams = Object.fromEntries(search.entries());
-  
+
         if (!searchParams.order_hash) {
-          showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any; }) => {
-            if (result.isConfirmed) {
-              redirectToBrandPage(); // reload lại trang
-            }
-          }, "error");
+          showAlert(
+            "Không tìm thấy sản phẩm!",
+            (result: { isConfirmed: any }) => {
+              if (result.isConfirmed) {
+                redirectToBrandPage(); // reload lại trang
+              }
+            },
+            "error"
+          );
           return;
         }
-  
+
         const test = await getOrder(searchParams.order_hash);
         setDetailsInfo(test);
       } catch (error) {
-        showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any; }) => {
-          if (result.isConfirmed) {
-            redirectToBrandPage(); // reload lại trang
-          }
-        }, "error");
+        showAlert(
+          "Không tìm thấy sản phẩm!",
+          (result: { isConfirmed: any }) => {
+            if (result.isConfirmed) {
+              redirectToBrandPage(); // reload lại trang
+            }
+          },
+          "error"
+        );
       } finally {
         setLoading(false);
         fetting = false;
       }
     })();
   }, [searchParams.order_hash]);
-  
-  
+
   useEffect(() => {
     if (detailsInfo) {
       document.title = "Thông tin đơn hàng " + detailsInfo.data?.code;
       window.detailsInfo = detailsInfo;
     }
   }, [detailsInfo]);
-  
-
 
   useEffect(() => {
     // Hàm kiểm tra điều kiện
     const checkCondition = async () => {
-      console.log('checkCondition');
+      console.log("checkCondition");
       if (isChecking || isStop) return; // Nếu đang kiểm tra, bỏ qua lần gọi mới
-      if (['đã gửi', 'hoàn thành'].includes(detailsInfo?.data.status.text.toLocaleLowerCase())) { setIsStop(true); return }; // Nếu đã gửi thì không update
+      if (
+        ["đã gửi", "hoàn thành"].includes(
+          detailsInfo?.data.status.text.toLocaleLowerCase()
+        )
+      ) {
+        setIsStop(true);
+        return;
+      } // Nếu đã gửi thì không update
       setIsChecking(true);
       try {
-        while (document.hidden) await new Promise(r => setTimeout(r, 500)); // Chờ người dùng bật lại tab, nếu có thay đổi thì reload luôn.
+        while (document.hidden) await new Promise((r) => setTimeout(r, 500)); // Chờ người dùng bật lại tab, nếu có thay đổi thì reload luôn.
         const data = await getOrder(searchParams.order_hash);
         // debugger;
-        if (detailsInfo && data.success && JSON.stringify(data.data) !== JSON.stringify(detailsInfo)) { // Nếu data có thay đổi
+        if (
+          detailsInfo &&
+          data.success &&
+          JSON.stringify(data.data) !== JSON.stringify(detailsInfo)
+        ) {
+          // Nếu data có thay đổi
           // Nếu thay đổi về số tiền
-          if (data.data.totalPay !== detailsInfo.data.totalPay && data.data.totalPay == 0) {
+          if (
+            data.data.totalPay !== detailsInfo.data.totalPay &&
+            data.data.totalPay == 0
+          ) {
             setIsStop(true);
-            const paymentAmount = detailsInfo.data.totalPay - data.data.totalPay; // tiền trước trừ tiền sau
-            showAlert("Thanh toán thành công  ", (result: { isConfirmed: any; }) => {
-              if (result.isConfirmed) {
-                window.location.reload(); // reload lại trang
-              }
-            }, "success");
-          }
-          else {
+            const paymentAmount =
+              detailsInfo.data.totalPay - data.data.totalPay; // tiền trước trừ tiền sau
+            showAlert(
+              "Thanh toán thành công  ",
+              (result: { isConfirmed: any }) => {
+                if (result.isConfirmed) {
+                  window.location.reload(); // reload lại trang
+                }
+              },
+              "success"
+            );
+          } else {
             window.location.reload(); // reload lại trang
           }
         }
       } catch (err) {
         console.error(err);
-      }
-      finally {
+      } finally {
         setIsChecking(false); // Kết thúc kiểm tra
       }
     };
@@ -360,10 +392,8 @@ export default function Home({ searchParams }: any) {
     return () => clearInterval(intervalId);
   }, [isChecking]); //Chạy lại effect nếu isChecking thay đổi
 
-  if (loading || typeof window === 'undefined') {
-
+  if (loading || typeof window === "undefined") {
     return <LoadingSpinner />;
-
   }
 
   const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
@@ -382,47 +412,53 @@ export default function Home({ searchParams }: any) {
     window.location.href = `${urlMain}`;
   }
 
-
-  
   function SetPayments() {
     setsStatePayment(!statePayment);
   }
 
-
-
-
-
   const statusElement = document.getElementById("statusText");
-  if (statusElement && detailsInfo && detailsInfo.data && detailsInfo.data.status) {
+  if (
+    statusElement &&
+    detailsInfo &&
+    detailsInfo.data &&
+    detailsInfo.data.status
+  ) {
     statusElement.innerHTML = `${detailsInfo.data.status.text}`;
   }
 
-
-
-
-
   return (
-
     <div className={`grid wide ${styles.Payment}`}>
-
-
       <div className={`l-8 c-12 ${styles.right}`}>
-
         <div className={styles.info}>
           <ul className={`${styles.listInfo} ${styles.container}`}>
             <h1 className="textTitle">Thông tin khách hàng</h1>
-            <InfoITem title="Khách hàng" content={detailsInfo.data.customer.name} />
-            <InfoITem title="Số điện thoại" content={detailsInfo.data.customer.phone} />
-            <InfoITem title="Địa chỉ" content={detailsInfo.data.customer.address} />
+            <InfoITem
+              title="Khách hàng"
+              content={detailsInfo.data.customer.name}
+            />
+            <InfoITem
+              title="Số điện thoại"
+              content={detailsInfo.data.customer.phone}
+            />
+            <InfoITem
+              title="Địa chỉ"
+              content={detailsInfo.data.customer.address}
+            />
           </ul>
           <ul className={`${styles.listInfo} ${styles.container}`}>
             <h1 className="textTitle">Nhân viên tư vấn</h1>
-            <InfoITem title="Nhân viên" content={(detailsInfo.data.customer.assign.last_name || '') + ' ' + detailsInfo.data.customer.assign.first_name} />
+            <InfoITem
+              title="Nhân viên"
+              content={
+                (detailsInfo.data.customer.assign.last_name || "") +
+                " " +
+                detailsInfo.data.customer.assign.first_name
+              }
+            />
             <InfoITem
               title="Số điện thoại"
               content={detailsInfo.data.customer.assign.phone}
             />
-
           </ul>
 
           {/* <div className={styles.box_img}>
@@ -448,19 +484,20 @@ export default function Home({ searchParams }: any) {
           <div className={styles.stt}>
             <div className={styles.stt_left}>
               <p>
-                Thời gian sản xuất dự kiến từ 8-10 ngày. Không tính chủ nhật và nghỉ lễ.
+                Thời gian sản xuất dự kiến từ 8-10 ngày. Không tính chủ nhật và
+                nghỉ lễ.
               </p>
               <p>
-                Quý khách nếu có thắc mắc: tình trạng đơn, thông tin đơn hàng, góp ý và khiếu nại, ...
+                Quý khách nếu có thắc mắc: tình trạng đơn, thông tin đơn hàng,
+                góp ý và khiếu nại, ...
               </p>
               <p>
                 Vui lòng liên hệ chăm sóc khách hàng :{CSKH}
-
                 <Image
                   onClick={() => {
                     openZalo(CSKH);
                   }}
-                  src={'/zalo_icon.png'}
+                  src={"/zalo_icon.png"}
                   alt="error"
                   width={372}
                   height={288}
@@ -469,7 +506,7 @@ export default function Home({ searchParams }: any) {
               </p>
             </div>
 
-            <div className="c-12 l-5">
+            <div className={`${styles.stt_right} c-12 l-5`}>
               <InfoITem
                 darkColor={true}
                 title="Tổng tiền"
@@ -481,16 +518,15 @@ export default function Home({ searchParams }: any) {
                   </>
                 }
               />
-              {
-                detailsInfo.data.discount > 0 ? (
-                  <InfoITem
-                    darkColor={true}
-                    title="Giảm giá"
-                    content={`${toVND(detailsInfo.data.discount)}`}
-                  />
-                ) :
-                  <>   </>
-              }
+              {detailsInfo.data.discount > 0 ? (
+                <InfoITem
+                  darkColor={true}
+                  title="Giảm giá"
+                  content={`${toVND(detailsInfo.data.discount)}`}
+                />
+              ) : (
+                <> </>
+              )}
 
               {/* <InfoITem
                 darkColor={true}
@@ -498,13 +534,17 @@ export default function Home({ searchParams }: any) {
                 content={`${toVND(detailsInfo.data.discount)} (${Math.round(detailsInfo.data.totalPay / detailsInfo.data.totalMoneyAfterVATorDiscount * 100)}%)`}
               /> */}
 
-              {
-                detailsInfo.data.discount > 0 ? (<InfoITem
+              {detailsInfo.data.discount > 0 ? (
+                <InfoITem
                   darkColor={true}
                   title="Sau giảm giá"
-                  content={`${toVND(detailsInfo.data.totalMoneyAfterVATorDiscount)} `}
-                />) : <>   </>
-              }
+                  content={`${toVND(
+                    detailsInfo.data.totalMoneyAfterVATorDiscount
+                  )} `}
+                />
+              ) : (
+                <> </>
+              )}
 
               <InfoITem
                 darkColor={true}
@@ -520,6 +560,166 @@ export default function Home({ searchParams }: any) {
                   </>
                 }
               /> */}
+              <Button className={styles.stt_btn} onClick={togglePopup}>
+                Thanh toán
+              </Button>
+              <Popup show={showPopup} onClose={togglePopup}>
+                <div className={styles.popup_container}>
+                  <div
+                    className={`${styles.container} ${styles.popup_left} l-5 c-12`}
+                  >
+                    <div>
+                      <div className={styles.popupleft_head}>
+                        <Image
+                          src={"/no-edit.png"}
+                          alt="error"
+                          width={24}
+                          height={24}
+                        />
+                        <h1>
+                          <span
+                            className={`${styles.popup_redcolor} darkColor`}
+                          >
+                            KHÔNG
+                          </span>{" "}
+                          chỉnh sửa thông tin
+                        </h1>
+                      </div>
+                      <p>
+                        Mã QR đã đi kèm
+                        <span className="darkColor">{" SỐ TÀI KHOẢN, SỐ TIỀN "}</span>
+                        và
+                        <span className="darkColor">{" MÃ GÓI CƯỚC"}</span>, bạn vui
+                        lòng
+                        <span className={styles.popup_redcolor}>
+                          {" không chỉnh sửa thông tin "}
+                        </span>
+                         sau khi quét mã.
+                      </p>
+                    </div>
+
+                    <div>
+                      <div className={styles.popupleft_head}>
+                        <Image
+                          src={"/iconserror.png"}
+                          alt="error"
+                          width={24}
+                          height={24}
+                        />
+                        <h1>Không thể quét mã QR</h1>
+                      </div>
+
+                      <p>
+                        Trường hợp không quét được mã QR, bạn hãy nhập chính xác
+                        số tài khoản và số tiền cần thanh toán trên màn hình.
+                      </p>
+                    </div>
+
+                    {/* <div>
+                      <div className={styles.popupleft_head}>
+                        <Image
+                          src={"/iconscall.png"}
+                          alt="error"
+                          width={24}
+                          height={24}
+                        />
+                        <h1>Liên hệ với chúng tôi</h1>
+                      </div>
+
+                      <p>
+                        Trường hợp không quét được mã QR, bạn hãy nhập chính xác
+                        số tài khoản và số tiền cần thanh toán trên màn hình.
+                      </p>
+                    </div> */}
+                    <div>
+                      <div className={styles.popupleft_head}>
+                        <Image
+                          src={"/iconswait.png"}
+                          alt="error"
+                          width={24}
+                          height={24}
+                        />
+                        <h1>Liên hệ với chúng tôi</h1>
+                      </div>
+
+                      <p>
+                        Hệ thống sẽ tự cập nhật trạng thái thanh toán trong vòng 5
+                        phút. Nếu quá thời gian trên mà hệ thống chưa cập nhật, hãy
+                        liên hệ nhân viên tư vấn hoặc CSKH để được hỗ trợ.
+                      </p>
+                    </div>
+                    <div className={styles.popupleft_head}>
+                      <Image
+                        onClick={() => {
+                          openZalo(CSKH);
+                        }}
+                        src={"/zalo_icon.png"}
+                        alt="error"
+                        width={24}
+                        height={24}
+                      />
+                      <h1>CSKH : {CSKH}</h1>
+                    </div>
+                  </div>
+                  <div className={` ${styles.popup_right} c-12`}>
+                    <div className={` ${styles.popup_right_top}`}>
+                      <h1>Thông tin thanh toán</h1>
+                      <p>
+                        Vui lòng kiểm tra thông tin dưới đây và quét mã QR để
+                        thanh toán
+                      </p>
+                      {/* styles.QR_popup */}
+                      <Image
+                        src={`https://img.vietqr.io/image/${BankInfo.BANKID}-${BankInfo.ACCOUNT_NO
+                          }-compact.png?amount=${detailsInfo.data.totalMoneyAfterVATorDiscount -
+                          detailsInfo.data.totalPay
+                          }&addInfo=${detailsInfo.data.code + " Thanh toan don hang"
+                          }&accountName=${BankInfo.ACCOUNT_NAME}`}
+                        alt="error"
+                        className={styles.QR_popup}
+                        width={250}
+                        height={250
+
+                        }
+                      />
+                    </div>
+                    <div className={`${styles.popup_right_bottom}`}>
+                      <div className={styles.rb_line}>
+                        <div className={styles.box_popup}>
+                          <p>Ngân hàng</p>
+                          <p className="darkColor">
+                            {BankInfo.BANKNAME}
+                          </p>
+                        </div>
+                        <div className={styles.box_popup}>
+                          <p>Tên tài khoản</p>
+                          <p className="darkColor">{BankInfo.ACCOUNT_NAME}</p>
+                        </div>
+                        <div className={styles.box_popup}>
+                          <p>Số tài khoản</p>
+                          <p className={`darkColor ${styles.popup_bluecolor}`}>
+                            {BankInfo.ACCOUNT_NO}
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        <div className={styles.box_popup}>
+                          <p>Số tiền </p>
+                          <p className={`darkColor ${styles.popup_bluecolor}`}>
+                            {toVND(detailsInfo.data.totalAccountAll)}
+                          </p>
+                        </div>
+                        <div className={styles.box_popup}>
+                          <p>Nội dung chuyển khoản</p>
+                          <p className={`darkColor ${styles.popup_bluecolor}`}>
+                            {detailsInfo.data.code}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Popup>
             </div>
           </div>
         </div>
@@ -527,10 +727,7 @@ export default function Home({ searchParams }: any) {
       <div className={`${styles.qrpay}`}>
         {detailsInfo.data.totalAccountAll > 0 ? (
           //  <ReactCardFlip flipDirection="horizontal" isFlipped={statePayment}>
-          <div
-            id="QR"
-            className={`${styles.container} ${styles.height_left}`}
-          >
+          <div id="QR" className={`${styles.container} ${styles.height_left}`}>
             <div className={styles.Payhead}>
               <p className="textTitle">Mã QR thanh toán</p>
             </div>
@@ -538,7 +735,11 @@ export default function Home({ searchParams }: any) {
               <div className={` ${styles.box_QR}`}>
                 <img
                   className={styles.QR_img}
-                  src={`https://img.vietqr.io/image/${BankInfo.BANKID}-${BankInfo.ACCOUNT_NO}-compact.png?amount=${detailsInfo.data.totalMoneyAfterVATorDiscount - detailsInfo.data.totalPay}&addInfo=${detailsInfo.data.code + " Thanh toan don hang"}&accountName=${BankInfo.ACCOUNT_NAME}`}
+                  src={`https://img.vietqr.io/image/${BankInfo.BANKID}-${BankInfo.ACCOUNT_NO
+                    }-compact.png?amount=${detailsInfo.data.totalMoneyAfterVATorDiscount -
+                    detailsInfo.data.totalPay
+                    }&addInfo=${detailsInfo.data.code + " Thanh toan don hang"
+                    }&accountName=${BankInfo.ACCOUNT_NAME}`}
                   alt="error"
                   width={372}
                   height={288}
@@ -568,14 +769,9 @@ export default function Home({ searchParams }: any) {
                   </div>
                   <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
                     <Button
-                      onClick={
-                        (event: any) => {
-                          copyText(
-                            BankInfo.ACCOUNT_NO,
-                            event.currentTarget
-                          );
-                        }
-                      }
+                      onClick={(event: any) => {
+                        copyText(BankInfo.ACCOUNT_NO, event.currentTarget);
+                      }}
                       className={styles.btn_pay}
                     >
                       Sao chép
@@ -585,18 +781,18 @@ export default function Home({ searchParams }: any) {
                 <div className={`row`}>
                   <div className={`col l-7 c-7 ${styles.box_flex}`}>
                     <p>Số tiền:</p>
-                    <p className="darkColor">{toVND(detailsInfo.data.totalAccountAll)}</p>
+                    <p className="darkColor">
+                      {toVND(detailsInfo.data.totalAccountAll)}
+                    </p>
                   </div>
                   <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
                     <Button
-                      onClick={
-                        (event: any) => {
-                          copyText(
-                            '' + detailsInfo.data.totalAccountAll,
-                            event.currentTarget
-                          );
-                        }
-                      }
+                      onClick={(event: any) => {
+                        copyText(
+                          "" + detailsInfo.data.totalAccountAll,
+                          event.currentTarget
+                        );
+                      }}
                       className={styles.btn_pay}
                     >
                       Sao chép
@@ -610,14 +806,9 @@ export default function Home({ searchParams }: any) {
                   </div>
                   <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
                     <Button
-                      onClick={
-                        (event: any) => {
-                          copyText(
-                            detailsInfo.data.code,
-                            event.currentTarget
-                          );
-                        }
-                      }
+                      onClick={(event: any) => {
+                        copyText(detailsInfo.data.code, event.currentTarget);
+                      }}
                       className={styles.btn_pay}
                     >
                       Sao chép
@@ -625,7 +816,9 @@ export default function Home({ searchParams }: any) {
                   </div>
                 </div>
                 <em>
-                  Hệ thống sẽ tự cập nhật trạng thái thanh toán trong vòng 5 phút. Nếu quá thời gian trên mà hệ thống chưa cập nhật, hãy liên hệ nhân viên tư vấn hoặc CSKH để được hỗ trợ.
+                  Hệ thống sẽ tự cập nhật trạng thái thanh toán trong vòng 5
+                  phút. Nếu quá thời gian trên mà hệ thống chưa cập nhật, hãy
+                  liên hệ nhân viên tư vấn hoặc CSKH để được hỗ trợ.
                 </em>
                 {/* <Button
                       onClick={SetPayments}
@@ -636,7 +829,7 @@ export default function Home({ searchParams }: any) {
               </div>
             </div>
           </div>
-
+        ) : (
           // <div
           //   className={`${styles.container} ${styles.paymentMT} ${styles.height_left}`}
           // >
@@ -679,7 +872,6 @@ export default function Home({ searchParams }: any) {
           //   </Button>
           // </div>
           //     </ReactCardFlip>
-        ) : (
           <div
             id="QR"
             className={`${styles.container} ${styles.height_left} ${styles.tks}`}
@@ -699,27 +891,32 @@ export default function Home({ searchParams }: any) {
         <div className={`${styles.container} ${styles.transport}`}>
           <p className="darkColor">Vận chuyển và nhận hàng</p>
 
-          {
-            detailsInfo.data.ships.track ? (
-              <p>Mã vận chuyển : {detailsInfo.data.ships.track}</p>
-            ) : (
-              <p></p>
-            )
+          {detailsInfo.data.ships.track ? (
+            <p>Mã vận chuyển : {detailsInfo.data.ships.track}</p>
+          ) : (
+            <p></p>
+          )}
 
-          }
-
-
-
-          <p>Đơn vị vận chuyển : {detailsInfo.data.ships.delivery?.text || "Chưa có thông tin"}</p>
+          <p>
+            Đơn vị vận chuyển :{" "}
+            {detailsInfo.data.ships.delivery?.text || "Chưa có thông tin"}
+          </p>
           <p>
             Dự kiến nhận hàng :{" "}
             {/* thời gian dự kiến hoặc sau 7 ngày đơn hàng đc tạo */}
-            {new Date(detailsInfo.data.ships.time_received * 1000 || ((detailsInfo.data.delivered_at * 1000) + 7 * 24 * 60 * 60 * 1000)).toLocaleDateString('en-DE')}
+            {new Date(
+              detailsInfo.data.ships.time_received * 1000 ||
+              detailsInfo.data.delivered_at * 1000 + 7 * 24 * 60 * 60 * 1000
+            ).toLocaleDateString("en-DE")}
           </p>
-          <p>Phí vận chuyển : {detailsInfo.data.ships.freeShip ? "Miễn phí" : "Khách hàng thanh toán phí ship"}</p>
+          <p>
+            Phí vận chuyển :{" "}
+            {detailsInfo.data.ships.freeShip
+              ? "Miễn phí"
+              : "Khách hàng thanh toán phí ship"}
+          </p>
         </div>
       </div>
     </div>
-
   );
 }

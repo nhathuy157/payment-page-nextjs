@@ -29,9 +29,12 @@ export async function generateMetadata({ params, searchParams }: any){
   }
 
 
-  const title = "Thông tin đơn hàng " + data.data.code;
+  const name = dataRef[brandKey]?.name || "Thiên Trang";
+  const title = "Theo dõi thông tin đơn hàng " + data.data.code + name;
   const description = dataRef[brandKey]?.sologan || "Giải pháp đồng phục chuyên nghiệp";
   const image = dataRef[brandKey]?.imgOder || "https://repository-images.githubusercontent.com/841320218/a7f67794-6ba3-4b3b-a764-a82e4b101476";
+  
+
   
   
 
