@@ -3,10 +3,10 @@ import classes from "./ProductItem.module.css";
 import Button from "../Button/Button";
 import Link from "next/link";
 export default function ProductItem(props: any) {
-  
+  var a;
   return (
     <Link
-      href={"/DetailsProduct" + window.location.search + "&index=" + props.index}
+      href={"/DetailsProduct?" + (a = new URLSearchParams(window.location.search), a.set('index', props.index), a.toString())}
       className={`${classes.container}`}
     >
       <div className={classes.inf}>

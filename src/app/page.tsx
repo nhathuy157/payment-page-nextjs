@@ -304,8 +304,8 @@ export default function Home({ searchParams }: any) {
           );
           return;
         }
-
-        const test = await getOrder(searchParams.order_hash);
+        const brand = (document.location.host.match(/\.(\w+)\./) || [])[1]; // regex lấy brand tuong ung
+        const test = await getOrder(searchParams.order_hash, brand);
         setDetailsInfo(test);
       } catch (error) {
         setError(error as Error);
@@ -348,7 +348,8 @@ export default function Home({ searchParams }: any) {
       setIsChecking(true);
       try {
         while (document.hidden) await new Promise((r) => setTimeout(r, 500)); // Chờ người dùng bật lại tab, nếu có thay đổi thì reload luôn.
-        const data = await getOrder(searchParams.order_hash);
+        const brand = (document.location.host.match(/\.(\w+)\./) || [])[1]; // regex lấy brand tuong ung
+        const data = await getOrder(searchParams.order_hash, brand);
         // debugger;
         if (
           detailsInfo &&

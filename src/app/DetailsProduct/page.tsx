@@ -351,7 +351,8 @@ export default function DetailsProduct() {
         if (window.detailsInfo) {
           setDetailsInfo(window.detailsInfo);
         } else {
-          const detailsInfo = await getOrder(orderHash);
+          const brand = (document.location.host.match(/\.(\w+)\./) || [])[1]; // regex lấy brand tuong ung
+          const detailsInfo = await getOrder(orderHash, brand);
   
           if (!detailsInfo || !detailsInfo.data || !detailsInfo.data.products) {
             showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any }) => {
@@ -436,7 +437,7 @@ export default function DetailsProduct() {
           <div className={classes.box_img}>
             <Image
               className={classes.img}
-              src={detailsInfo.data.images || "/no-pictures.png"}
+              src={item.image || "/no-pictures.png"}
               alt="error"
               width={372}
               height={288}
