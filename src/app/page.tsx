@@ -725,157 +725,9 @@ export default function Home({ searchParams }: any) {
         </div>
       </div>
       <div className={`${styles.qrpay}`}>
-        {detailsInfo.data.totalAccountAll > 0 ? (
-          //  <ReactCardFlip flipDirection="horizontal" isFlipped={statePayment}>
-          <div id="QR" className={`${styles.container} ${styles.height_left}`}>
-            <div className={styles.Payhead}>
-              <p className="textTitle">Mã QR thanh toán</p>
-            </div>
-            <div className={`${styles.pay_container}`}>
-              <div className={` ${styles.box_QR}`}>
-                <img
-                  className={styles.QR_img}
-                  src={`https://img.vietqr.io/image/${BankInfo.BANKID}-${BankInfo.ACCOUNT_NO
-                    }-compact.png?amount=${detailsInfo.data.totalMoneyAfterVATorDiscount -
-                    detailsInfo.data.totalPay
-                    }&addInfo=${detailsInfo.data.code + " Thanh toan don hang"
-                    }&accountName=${BankInfo.ACCOUNT_NAME}`}
-                  alt="error"
-                  width={372}
-                  height={288}
-                />
-              </div>
-
-              <div className={styles.pay_container_right}>
-                <div className={styles.bank}>
-                  <Image
-                    src={BankInfo.BANKLOGO}
-                    alt="error"
-                    width={372}
-                    height={288}
-                  />
-                  <div>
-                    <p className="darkColor">{BankInfo.BANKNAME}</p>
-                  </div>
-                </div>
-                <div className={styles.box_flex}>
-                  <p>Chủ tài khoản:</p>
-                  <p className="darkColor">{BankInfo.ACCOUNT_NAME}</p>
-                </div>
-                <div className={`row`}>
-                  <div className={`col l-7 c-7 ${styles.box_flex}`}>
-                    <p>Số tài khoản:</p>
-                    <p className="darkColor">{BankInfo.ACCOUNT_NO}</p>
-                  </div>
-                  <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
-                    <Button
-                      onClick={(event: any) => {
-                        copyText(BankInfo.ACCOUNT_NO, event.currentTarget);
-                      }}
-                      className={styles.btn_pay}
-                    >
-                      Sao chép
-                    </Button>
-                  </div>
-                </div>
-                <div className={`row`}>
-                  <div className={`col l-7 c-7 ${styles.box_flex}`}>
-                    <p>Số tiền:</p>
-                    <p className="darkColor">
-                      {toVND(detailsInfo.data.totalAccountAll)}
-                    </p>
-                  </div>
-                  <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
-                    <Button
-                      onClick={(event: any) => {
-                        copyText(
-                          "" + detailsInfo.data.totalAccountAll,
-                          event.currentTarget
-                        );
-                      }}
-                      className={styles.btn_pay}
-                    >
-                      Sao chép
-                    </Button>
-                  </div>
-                </div>
-                <div className={`row`}>
-                  <div className={`col l-7 c-7 ${styles.box_flex}`}>
-                    <p>Nội dung:</p>
-                    <p className="darkColor">{detailsInfo.data.code}</p>
-                  </div>
-                  <div className={`col l-5 c-5 ${styles.box_btn_pay}`}>
-                    <Button
-                      onClick={(event: any) => {
-                        copyText(detailsInfo.data.code, event.currentTarget);
-                      }}
-                      className={styles.btn_pay}
-                    >
-                      Sao chép
-                    </Button>
-                  </div>
-                </div>
-                <em>
-                  Hệ thống sẽ tự cập nhật trạng thái thanh toán trong vòng 5
-                  phút. Nếu quá thời gian trên mà hệ thống chưa cập nhật, hãy
-                  liên hệ nhân viên tư vấn hoặc CSKH để được hỗ trợ.
-                </em>
-                {/* <Button
-                      onClick={SetPayments}
-                      className={` ${styles.btn_QR}`}
-                    >
-                      Hủy
-                    </Button> */}
-              </div>
-            </div>
-          </div>
-        ) : (
-          // <div
-          //   className={`${styles.container} ${styles.paymentMT} ${styles.height_left}`}
-          // >
-          //   <div className={styles.box_flex}>
-          //     <Image
-          //       src={"/iconscheck.png"}
-          //       alt="error"
-          //       width={372}
-          //       height={288}
-          //     />
-          //     <p>Quý khách vui lòng kiểm tra lại thông tin cá nhân.</p>
-          //   </div>
-          //   <div className={styles.box_flex}>
-          //     <p>
-          //       Nếu có bất kỳ vấn đề gì với đơn hàng, xin vui lòng liên hệ
-          //       ngay qua số điện thoại/Zalo: {detailsInfo.data.customer.assign.phone} để được
-          //       hỗ trợ nhanh chóng.
-          //     </p>
-          //     <Image
-          //       src={'/iconsSupport.png'}
-          //       alt="error"
-          //       width={372}
-          //       height={288}
-          //     />
-          //   </div>
-          //   <div className={styles.box_flex}>
-          //     <Image
-          //       src={"/iconsPayment.png"}
-          //       alt="error"
-          //       width={372}
-          //       height={288}
-          //     />
-          //     <p>
-          //       Vui lòng thanh toán số tiền trong đơn hàng để chúng tôi có thể
-          //       xử lý đơn hàng của Quý khách ngay lập tức.
-          //     </p>
-          //   </div>
-          //   <Button onClick={SetPayments} className={styles.btn_MT}>
-          //     Thanh toán
-          //   </Button>
-          // </div>
-          //     </ReactCardFlip>
-          <div
-            id="QR"
-            className={`${styles.container} ${styles.height_left} ${styles.tks}`}
-          >
+       
+          
+          <div id="QR"className={`${styles.container} ${styles.height_left} ${styles.tks}`}>
             <div className={styles.Payhead}>
               <Image
                 src={imgTks}
@@ -886,7 +738,7 @@ export default function Home({ searchParams }: any) {
               />
             </div>
           </div>
-        )}
+        
 
         <div className={`${styles.container} ${styles.transport}`}>
           <p className="darkColor">Vận chuyển và nhận hàng</p>
