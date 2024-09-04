@@ -13,8 +13,6 @@ import getOrder from "./common";
 import LoadingSpinner from "@/components/Loading/LoadingSpinner";
 import Popup from "@/components/Popup/Popup";
 
-import { Result } from "postcss";
-import { debug, error } from "console";
 // import { headers } from 'next/headers';
 
 function toVND(number: number) {
@@ -95,7 +93,7 @@ export default function Home({ searchParams }: any) {
   const [isChecking, setIsChecking] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isStop, setIsStop] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null as any);
   const [showPopup, setShowPopup] = useState(false);
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -310,6 +308,7 @@ export default function Home({ searchParams }: any) {
         const test = await getOrder(searchParams.order_hash);
         setDetailsInfo(test);
       } catch (error) {
+        setError(error as Error);
         showAlert(
           "Không tìm thấy sản phẩm!",
           (result: { isConfirmed: any }) => {
@@ -392,7 +391,7 @@ export default function Home({ searchParams }: any) {
     return () => clearInterval(intervalId);
   }, [isChecking]); //Chạy lại effect nếu isChecking thay đổi
 
-  if (loading || typeof window === "undefined") {
+  if (loading || typeof window === "undefined" || error) {
     return <LoadingSpinner />;
   }
 
@@ -589,7 +588,7 @@ export default function Home({ searchParams }: any) {
                         Mã QR đã đi kèm
                         <span className="darkColor">{" SỐ TÀI KHOẢN, SỐ TIỀN "}</span>
                         và
-                        <span className="darkColor">{" MÃ GÓI CƯỚC"}</span>, bạn vui
+                        <span className="darkColor">{" MÃ ĐƠN HÀNG"}</span>, bạn vui
                         lòng
                         <span className={styles.popup_redcolor}>
                           {" không chỉnh sửa thông tin "}
@@ -676,11 +675,21 @@ export default function Home({ searchParams }: any) {
                           }&addInfo=${detailsInfo.data.code + " Thanh toan don hang"
                           }&accountName=${BankInfo.ACCOUNT_NAME}`}
                         alt="error"
+                        id="image_qr"
                         className={styles.QR_popup}
                         width={250}
-                        height={250
-
-                        }
+                        height={250}
+                        onLoad={(e) => {
+                          const image_qr = e.currentTarget;
+                          var canvas = document.createElement("canvas");
+                          debugger
+                          canvas.width = image_qr.width; canvas.height = image_qr.height;
+                          var ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+                          ctx.drawImage(image_qr, 0, 0);
+                          ctx.fillStyle = "white";
+                          ctx.fillRect(0, 0, canvas.width, Math.round(canvas.height*0.16));
+                          image_qr.srcset = canvas.toDataURL();
+                        }}
                       />
                     </div>
                     <div className={`${styles.popup_right_bottom}`}>
@@ -688,7 +697,7 @@ export default function Home({ searchParams }: any) {
                         <div className={styles.box_popup}>
                           <p>Ngân hàng</p>
                           <p className="darkColor">
-                            {BankInfo.BANKNAME}
+                          <p className={`darkColor ${styles.long_text}`}>{BankInfo.BANKNAME}</p>
                           </p>
                         </div>
                         <div className={styles.box_popup}>
@@ -734,7 +743,7 @@ export default function Home({ searchParams }: any) {
                 className={styles.imgTks}
                 alt="error"
                 width={523}
-                height={599}
+                height={600}
               />
             </div>
           </div>

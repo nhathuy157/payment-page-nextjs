@@ -22,7 +22,7 @@ const dataRef: any = {
     API : "https://apidonhang.aothun247.vn/getOrderDetail?order_hash=",
     bank: {
       BANKID: "VPB",
-      BANKNAME: "VPBank - Ngân hàng TMCP Việt Nam Thịnh Vượng",
+      BANKNAME: "VPBank - TMCP Việt Nam Thịnh Vượng",
       BANKLOGO: "/VPlogo.jpg",
       ACCOUNT_NO: 118833333,
       ACCOUNT_NAME: "PHAN THỊ HẠNH",
@@ -40,7 +40,7 @@ const dataRef: any = {
     API : "https://apidonhang.dongphucbtp.vn/getOrderDetail?order_hash=",
     bank: {
       BANKID: "VCB",
-      BANKNAME: "Vietcombank - Ngân hàng TMCP Ngoại Thương Việt Nam",
+      BANKNAME: "Vietcombank - TMCP Ngoại Thương Việt Nam",
       BANKLOGO: "/VBClogo.png",
       ACCOUNT_NO: 3383777777,
       ACCOUNT_NAME: "PHAN THỊ HẠNH",
@@ -58,7 +58,7 @@ const dataRef: any = {
     API : "https://apidonhang.thientrang.vn/getOrderDetail?order_hash=",
     bank: {
       BANKID: "VCB",
-      BANKNAME: "Vietcombank - Ngân hàng TMCP Ngoại Thương Việt Nam",
+      BANKNAME: "Vietcombank - TMCP Ngoại Thương Việt Nam",
       BANKLOGO: "/VBClogo.png",
       ACCOUNT_NO: 8386777777,
       ACCOUNT_NAME: "PHAN THỊ HẠNH",
@@ -76,7 +76,7 @@ const dataRef: any = {
     API : "https://apidonhang.thientrang.vn/getOrderDetail?order_hash=",
     bank: {
       BANKID: "VPB",
-      BANKNAME: "VPBank - Ngân hàng TMCP Việt Nam Thịnh Vượng",
+      BANKNAME: "VPBank - TMCP Việt Nam Thịnh Vượng",
       BANKLOGO: "/VPlogo.jpg",
       ACCOUNT_NO: 118833333,
       ACCOUNT_NAME: "PHAN THỊ HẠNH",
