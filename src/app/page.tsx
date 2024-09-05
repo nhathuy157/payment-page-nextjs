@@ -57,22 +57,7 @@ function copyText(text: string, btn: any) {
   document.body.removeChild(textarea);
   btn.innerText = "Đã sao chép";
 }
-function redirectToBrandPage() {
-  // Extract the base URL from the current URL
-  const currentUrl = window.location.href;
-  const baseUrl = currentUrl.split("/")[2]; // Get the domain part of the URL
 
-  // Find the corresponding brand
-  const brandKey =
-    Object.keys(dataRef).find((key) => dataRef[key].url.includes(baseUrl)) ||
-    "default";
-
-  // Get the URL to redirect to
-  const redirectUrl = dataRef[brandKey].url;
-
-  // Redirect to the brand's URL
-  window.location.href = redirectUrl;
-}
 
 const showAlert = (text: any, callback: any, type: any) => {
   Swal.fire({
@@ -98,6 +83,17 @@ export default function Home({ searchParams }: any) {
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
+
+  const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
+  const urlMain = (dataRef[ref] || dataRef.default).url;
+  const BankInfo = (dataRef[ref] || dataRef.default).bank;
+  const imgTks = (dataRef[ref] || dataRef.default).imgTks;
+  const CSKH = (dataRef[ref] || dataRef.default).CSKH;
+
+  // Kiểm tra domain xem user truy cập từ brand nào
+
+  const search = new URLSearchParams(window.location.search);
+  searchParams = Object.fromEntries(search.entries());
 
   var [detailsInfo, setDetailsInfo] = useState({
     success: true,
@@ -297,7 +293,7 @@ export default function Home({ searchParams }: any) {
             "Không tìm thấy sản phẩm!",
             (result: { isConfirmed: any }) => {
               if (result.isConfirmed) {
-                redirectToBrandPage(); // reload lại trang
+                window.location.href = `${urlMain}`; // reload lại trang
               }
             },
             "error"
@@ -313,7 +309,7 @@ export default function Home({ searchParams }: any) {
           "Không tìm thấy sản phẩm!",
           (result: { isConfirmed: any }) => {
             if (result.isConfirmed) {
-              redirectToBrandPage(); // reload lại trang
+              window.location.href = `${urlMain}`; // reload lại trang
             }
           },
           "error"
@@ -396,16 +392,7 @@ export default function Home({ searchParams }: any) {
     return <LoadingSpinner />;
   }
 
-  const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
-  const urlMain = (dataRef[ref] || dataRef.default).url;
-  const BankInfo = (dataRef[ref] || dataRef.default).bank;
-  const imgTks = (dataRef[ref] || dataRef.default).imgTks;
-  const CSKH = (dataRef[ref] || dataRef.default).CSKH;
-
-  // Kiểm tra domain xem user truy cập từ brand nào
-
-  const search = new URLSearchParams(window.location.search);
-  searchParams = Object.fromEntries(search.entries());
+  
   if (!searchParams.order_hash) window.location.href = `${urlMain}`;
 
   if (error) {
@@ -415,6 +402,8 @@ export default function Home({ searchParams }: any) {
   function SetPayments() {
     setsStatePayment(!statePayment);
   }
+
+ 
 
   const statusElement = document.getElementById("statusText");
   if (

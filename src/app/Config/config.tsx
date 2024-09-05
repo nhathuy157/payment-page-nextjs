@@ -70,7 +70,7 @@ const dataRef: any = {
     imgTks: "/TTtks.png",
     sologan: "Giải pháp đồng phục chuyên nghiệp",
     favicon: "/logodongphucTT.png",
-    logo: "/logodongphucTT.jpg",
+    logo: "/logowhite.png",
     CSKH: "0889581234",
     imgOder: "imgOderTT.jpg",
     API : "https://apidonhang.thientrang.vn/getOrderDetail?order_hash=",

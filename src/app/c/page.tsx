@@ -51,7 +51,7 @@ export async function generateMetadata({ params, searchParams }: any) {
       imageBrand = "https://raw.githubusercontent.com/nhathuy157/Img-Extension/main/imgOderBTP.jpg";
     }
     if (brandKey === "aothun247") {
-      imageBrand = "https://raw.githubusercontent.com/nhathuy157/Img-Extension/main/AoThun247.jpg";
+      imageBrand = "https://raw.githubusercontent.com/nhathuy157/Img-Extension/main/imgOder247.jpg";
     }
     else {
       console.log(error);
