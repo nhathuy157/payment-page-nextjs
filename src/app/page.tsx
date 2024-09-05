@@ -84,17 +84,6 @@ export default function Home({ searchParams }: any) {
     setShowPopup(!showPopup);
   };
 
-  const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
-  const urlMain = (dataRef[ref] || dataRef.default).url;
-  const BankInfo = (dataRef[ref] || dataRef.default).bank;
-  const imgTks = (dataRef[ref] || dataRef.default).imgTks;
-  const CSKH = (dataRef[ref] || dataRef.default).CSKH;
-
-  // Kiểm tra domain xem user truy cập từ brand nào
-
-  const search = new URLSearchParams(window.location.search);
-  searchParams = Object.fromEntries(search.entries());
-
   var [detailsInfo, setDetailsInfo] = useState({
     success: true,
     data: {
@@ -293,7 +282,7 @@ export default function Home({ searchParams }: any) {
             "Không tìm thấy sản phẩm!",
             (result: { isConfirmed: any }) => {
               if (result.isConfirmed) {
-                window.location.href = `${urlMain}`; // reload lại trang
+                window.location.href = urlMain; // reload lại trang
               }
             },
             "error"
@@ -309,7 +298,7 @@ export default function Home({ searchParams }: any) {
           "Không tìm thấy sản phẩm!",
           (result: { isConfirmed: any }) => {
             if (result.isConfirmed) {
-              window.location.href = `${urlMain}`; // reload lại trang
+              window.location.href = urlMain; // reload lại trang
             }
           },
           "error"
@@ -392,7 +381,16 @@ export default function Home({ searchParams }: any) {
     return <LoadingSpinner />;
   }
 
-  
+  const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
+  const urlMain = (dataRef[ref] || dataRef.default).url;
+  const BankInfo = (dataRef[ref] || dataRef.default).bank;
+  const imgTks = (dataRef[ref] || dataRef.default).imgTks;
+  const CSKH = (dataRef[ref] || dataRef.default).CSKH;
+
+  // Kiểm tra domain xem user truy cập từ brand nào
+
+  const search = new URLSearchParams(window.location.search);
+  searchParams = Object.fromEntries(search.entries());
   if (!searchParams.order_hash) window.location.href = `${urlMain}`;
 
   if (error) {
@@ -403,7 +401,7 @@ export default function Home({ searchParams }: any) {
     setsStatePayment(!statePayment);
   }
 
- 
+
 
   const statusElement = document.getElementById("statusText");
   if (
