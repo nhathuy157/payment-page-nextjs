@@ -4,6 +4,7 @@ import getOrder from '../common';
 import Script from 'next/script'
 
 import React, { useState, useEffect } from "react";
+import { error } from 'console';
 
 
 export async function generateMetadata({ params, searchParams }: any) {
@@ -11,6 +12,7 @@ export async function generateMetadata({ params, searchParams }: any) {
   const url = headers().get('host') || '';
 
   // Xác định thương hiệu dựa trên URL
+  
   const brandKey = Object.keys(dataRef).find(key => url.includes(key)) || 'default';
 
 
@@ -33,10 +35,33 @@ export async function generateMetadata({ params, searchParams }: any) {
   }
 
 
-  const name = dataRef[brandKey]?.name || "Thiên Trang";
-  const title = "Theo dõi thông tin đơn hàng " + data.data.code + name;
+
+  const name = dataRef[brandKey]?.name || " Thiên Trang";
+  const title = "Theo dõi thông tin đơn hàng " + data.data.code + " " + name;
   const description = dataRef[brandKey]?.sologan || "Giải pháp đồng phục chuyên nghiệp";
   const image = dataRef[brandKey]?.imgOder || "https://repository-images.githubusercontent.com/841320218/a7f67794-6ba3-4b3b-a764-a82e4b101476";
+
+  function getImagesBrand() {
+    let imageBrand = "https://raw.githubusercontent.com/nhathuy157/Img-Extension/main/imgOderTT.jpg";
+    if (brandKey === "thientrang") {
+      imageBrand = "https://raw.githubusercontent.com/nhathuy157/Img-Extension/main/imgOderTT.jpg";
+      
+    }
+    if (brandKey === "dongphucbtp") { 
+      imageBrand = "https://raw.githubusercontent.com/nhathuy157/Img-Extension/main/imgOderBTP.jpg";
+    }
+    if (brandKey === "aothun247") {
+      imageBrand = "https://raw.githubusercontent.com/nhathuy157/Img-Extension/main/AoThun247.jpg";
+    }
+    else {
+      console.log(error);
+    }
+
+    return imageBrand;
+  
+  }
+
+
 
 
 
@@ -57,7 +82,7 @@ export async function generateMetadata({ params, searchParams }: any) {
       images: [
         {
           // url: data.data.image ? data.data.image : "/no-pictures.png",
-          url: image,
+          url: getImagesBrand(),
           alt: data.data.code,
         }
       ]

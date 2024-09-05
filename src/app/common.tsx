@@ -7,11 +7,14 @@ async function getOrder(order_hash: string, brand: string) {
       
       const response = await fetch(`https://apidonhang.${_brand}.vn/getOrderDetail?order_hash=${order_hash}`);
       const res_json = await response.json();
+      console.log(brand);
       if (!response.ok) {
+        console.log(brand);
           throw new Error(JSON.stringify(res_json));
       }
       return res_json;
   } catch (error) {
+    console.log(brand);
       console.error("Error fetching order details:", error);
       throw error;
   }
