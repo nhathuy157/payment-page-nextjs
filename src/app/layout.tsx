@@ -12,20 +12,25 @@ export default function RootLayout({
   const [favicon, setFavicon] = useState<string>('/favicon.ico'); // Default favicon
 
   useEffect(() => {
-    // Get the current hostname (e.g., "aothun247.vn")
     const hostname = window.location.hostname;
-
-    // Extract the brand based on the hostname (e.g., "aothun247")
-    const brand = hostname.split('.')[1];
-
-    // Check if the brand exists in the config
-    if (dataRef[brand]) {
-      setFavicon(dataRef[brand].favicon);
+    const hostnameParts = hostname.split('.');
+    console.log('Hostname:', hostname);
+    console.log('Hostname Parts:', hostnameParts);
+  
+    if (hostnameParts[0] === 'donhang' && hostnameParts.length >= 3) {
+      const brand = hostnameParts[1];
+      console.log('Brand:', brand);
+  
+      if (dataRef[brand]) {
+        setFavicon(dataRef[brand].favicon);
+      } else {
+        setFavicon(dataRef.default.favicon);
+      }
     } else {
-      // Set the default favicon if no brand is found
       setFavicon(dataRef.default.favicon);
     }
   }, []);
+  
 
   return (
     <html lang="en">
