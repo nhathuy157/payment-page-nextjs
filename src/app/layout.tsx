@@ -16,7 +16,7 @@ export default function RootLayout({
     const hostname = window.location.hostname;
 
     // Extract the brand based on the hostname (e.g., "aothun247")
-    const brand = hostname.split('.')[0];
+    const brand = hostname.split('.')[1];
 
     // Check if the brand exists in the config
     if (dataRef[brand]) {
