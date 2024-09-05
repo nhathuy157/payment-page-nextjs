@@ -33,30 +33,13 @@ const showAlert = (text: any, callback: any, type: any) => {
   }).then(callback)
 };
 
-function redirectToBrandPage() {
-  // Extract the base URL from the current URL
-  const currentUrl = window.location.href;
-  const baseUrl = currentUrl.split('/')[2]; // Get the domain part of the URL
-
-  // Find the corresponding brand
-  const brandKey = Object.keys(dataRef).find(key => dataRef[key].url.includes(baseUrl)) || 'default';
-
-  // Get the URL to redirect to
-  const redirectUrl = dataRef[brandKey].url;
-
-  // Redirect to the brand's URL
-  window.location.href = redirectUrl;
+function gotoMainBrand() {
+  const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
+  const urlMain = (dataRef[ref] || dataRef.default).url;
+  window.location.href = urlMain;
 }
 
-
-
-
-
-
 export default function DetailsProduct() {
-
-
-
   const [detailsInfo, setDetailsInfo] = useState({
     "success": true,
     "data": {
@@ -272,63 +255,10 @@ export default function DetailsProduct() {
 
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (window.detailsInfo) {
-  //         setDetailsInfo(window.detailsInfo);
-  //         setLoading(false);
-  //       } else {
-  //         const detailsInfo = await getOrder(searchParams.order_hash);
-  //         setDetailsInfo(detailsInfo);
-
-  //         // Thay đổi tiêu đề của tài liệu HTML
-  //         document.title = detailsInfo.data?.code;
-  //         setLoading(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error showing alert:", error);
-  //       console.log(searchParams.order_hash);
-  //       showAlert("Không tìm thấy sản phẩm ! ", (result: { isConfirmed: any;  }) => {
-  //         if (result.isConfirmed) {
-  //           redirectToBrandPage(); // reload lại trang
-  //         }
-
-  //       });
-
-  //       setLoading(false); // Đảm bảo rằng loading được tắt ngay cả khi có lỗi
-  //     }
-  //   };
-
-  //   fetchData();
-
-  //   return () => { };
-  // }, [
-
-  // ]);
-
-
-
-
-  // if (loading) {
-  //   return <LoadingSpinner />;
-  // }
-  // // debugger
-  // const item = detailsInfo.data.products[searchParams.index];
-  // if (!item) {
-  //   showAlert("Không tìm thấy sản phẩm !  ", (result: { isConfirmed: any }) => {
-  //     if (result.isConfirmed) {
-  //       redirectToBrandPage(); // reload lại trang
-  //     }
-
-
-  //   });
-  //   return null;
-  // }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setDetailsInfo(null as any);
         const urlParams = new URLSearchParams(window.location.search);
         let orderHash = urlParams.get('order_hash');
         const productIndex = urlParams.get('index');
@@ -340,11 +270,7 @@ export default function DetailsProduct() {
   
         // Nếu `order_hash` vẫn không tồn tại hoặc không hợp lệ
         if (!orderHash) {
-          showAlert("Order hash không hợp lệ!", (result: { isConfirmed: any }) => {
-            if (result.isConfirmed) {
-              redirectToBrandPage();
-            }
-          },"error");
+          gotoMainBrand();
           return; // Kết thúc hàm nếu `order_hash` không hợp lệ
         }
   
@@ -355,11 +281,12 @@ export default function DetailsProduct() {
           const detailsInfo = await getOrder(orderHash, brand);
   
           if (!detailsInfo || !detailsInfo.data || !detailsInfo.data.products) {
-            showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any }) => {
-              if (result.isConfirmed) {
-                redirectToBrandPage();
-              }
-            },"error");
+            // showAlert("Không tìm thấy đơn hàng!", (result: { isConfirmed: any }) => {
+            //   if (result.isConfirmed) {
+               
+            //   }
+            // },"error");
+            gotoMainBrand();
             return;
           }
   
@@ -369,11 +296,12 @@ export default function DetailsProduct() {
       } catch (error) {
         console.error("Error fetching order details:", error);
   
-        showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any }) => {
-          if (result.isConfirmed) {
-            redirectToBrandPage();
-          }
-        },"error");
+        // showAlert("Không tìm thấy đơn hàng!", (result: { isConfirmed: any }) => {
+        //   if (result.isConfirmed) {
+            
+        //   }
+        // },"error");
+        gotoMainBrand();
       } finally {
         setLoading(false);
       }
@@ -384,7 +312,7 @@ export default function DetailsProduct() {
   
   
 
-  if (loading) {
+  if (loading || !detailsInfo) {
     return <LoadingSpinner />;
   }
   let item: any;
@@ -401,11 +329,13 @@ export default function DetailsProduct() {
     // Continue processing the `item`
     // ...
   } else {
-    showAlert("Không tìm thấy sản phẩm!", (result: { isConfirmed: any }) => {
-      if (result.isConfirmed) {
-        redirectToBrandPage(); // reload lại trang
-      }
-    },"error");
+    // showAlert("Không tìm thấy sản phẩm!", (result: any) => {
+    //   if (result.isConfirmed) {
+    //      // reload lại trang
+    //      gotoMainBrand();
+    //   }
+    // },"error");
+    gotoMainBrand();
     return null;
   }
   

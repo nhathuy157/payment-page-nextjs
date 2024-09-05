@@ -64,13 +64,13 @@ const showAlert = (text: any, callback: any, type: any) => {
     title: "Thông báo",
     text: text,
     icon: type,
-    confirmButtonText: "OK",
-    showConfirmButton: true,
-    allowOutsideClick: false, // Ngăn không cho đóng bằng cách nhấp ra ngoài
-    allowEscapeKey: false, // Ngăn không cho đóng bằng phím Esc
-    showCancelButton: false,
+    timer: 5000, // Automatically close after 2 seconds
+    showConfirmButton: true, // Remove confirmation button
+    allowOutsideClick: false, // Prevent closing by clicking outside
+    allowEscapeKey: false, // Prevent closing by pressing the Esc key
   }).then(callback);
 };
+
 
 export default function Home({ searchParams }: any) {
   const [statePayment, setsStatePayment] = useState(true);
@@ -276,33 +276,17 @@ export default function Home({ searchParams }: any) {
       try {
         const search = new URLSearchParams(window.location.search);
         const searchParams = Object.fromEntries(search.entries());
-
-        if (!searchParams.order_hash) {
-          showAlert(
-            "Không tìm thấy sản phẩm!",
-            (result: { isConfirmed: any }) => {
-              if (result.isConfirmed) {
-                window.location.href = urlMain; // reload lại trang
-              }
-            },
-            "error"
-          );
-          return;
+        if (!searchParams.order_hash){
+          window.location.href = urlMain;
         }
         const brand = (document.location.host.match(/\.(\w+)\./) || [])[1]; // regex lấy brand tuong ung
         const test = await getOrder(searchParams.order_hash, brand);
         setDetailsInfo(test);
       } catch (error) {
+        
+              gotoMainBrand();
+        
         setError(error as Error);
-        showAlert(
-          "Không tìm thấy sản phẩm!",
-          (result: { isConfirmed: any }) => {
-            if (result.isConfirmed) {
-              window.location.href = urlMain; // reload lại trang
-            }
-          },
-          "error"
-        );
       } finally {
         setLoading(false);
         fetting = false;
@@ -380,21 +364,17 @@ export default function Home({ searchParams }: any) {
   if (loading || typeof window === "undefined" || error) {
     return <LoadingSpinner />;
   }
-
+  // Kiểm tra domain xem user truy cập từ brand nào 
   const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
   const urlMain = (dataRef[ref] || dataRef.default).url;
   const BankInfo = (dataRef[ref] || dataRef.default).bank;
   const imgTks = (dataRef[ref] || dataRef.default).imgTks;
   const CSKH = (dataRef[ref] || dataRef.default).CSKH;
 
-  // Kiểm tra domain xem user truy cập từ brand nào
-
-  const search = new URLSearchParams(window.location.search);
-  searchParams = Object.fromEntries(search.entries());
-  if (!searchParams.order_hash) window.location.href = `${urlMain}`;
-
-  if (error) {
-    window.location.href = `${urlMain}`;
+  function gotoMainBrand() {
+    const ref = (window.location.host.match(/\w+\.(\w+)\.vn/) || [])[1];
+    const urlMain = (dataRef[ref] || dataRef.default).url;
+    window.location.href = urlMain;
   }
 
   function SetPayments() {
