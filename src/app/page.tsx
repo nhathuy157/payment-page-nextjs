@@ -640,7 +640,7 @@ export default function Home({ searchParams }: any) {
                         src={`https://img.vietqr.io/image/${BankInfo.BANKID}-${BankInfo.ACCOUNT_NO
                           }-compact.png?amount=${detailsInfo.data.totalMoneyAfterVATorDiscount -
                           detailsInfo.data.totalPay
-                          }&addInfo=${detailsInfo.data.code + " Thanh toan don hang"
+                          }&addInfo=${detailsInfo.data.code
                           }&accountName=${BankInfo.ACCOUNT_NAME}`}
                         alt="error"
                         id="image_qr"
