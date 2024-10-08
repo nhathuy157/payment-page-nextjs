@@ -516,7 +516,7 @@ export default function Home({ searchParams }: any) {
               <InfoITem
                 darkColor={true}
                 title="Đã thanh toán"
-                content={`${toVND(detailsInfo.data.totalPay)} `}
+                content={`${toVND(detailsInfo.data.totalAccountAll)} `}
               />
               {/* <InfoITem
                 darkColor={true}
