@@ -639,7 +639,7 @@ export default function Home({ searchParams }: any) {
                       <Image
                         src={`https://img.vietqr.io/image/${BankInfo.BANKID}-${BankInfo.ACCOUNT_NO
                           }-compact.png?amount=${detailsInfo.data.totalMoneyAfterVATorDiscount -
-                          detailsInfo.data.totalPay
+                          detailsInfo.data.totalAccountAll
                           }&addInfo=${detailsInfo.data.code
                           }&accountName=${BankInfo.ACCOUNT_NAME}`}
                         alt="error"
@@ -683,7 +683,8 @@ export default function Home({ searchParams }: any) {
                         <div className={styles.box_popup}>
                           <p>Số tiền </p>
                           <p className={`darkColor ${styles.popup_bluecolor}`}>
-                            {toVND(detailsInfo.data.totalAccountAll)}
+                            {toVND(detailsInfo.data.totalMoneyAfterVATorDiscount -
+                          detailsInfo.data.totalAccountAll)}
                           </p>
                         </div>
                         <div className={styles.box_popup}>
