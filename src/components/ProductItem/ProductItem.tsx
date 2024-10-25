@@ -23,14 +23,25 @@ export default function ProductItem(props: any) {
           <p>Tên sản phẩm: {props.content.name} {(props.content.material.name).toLowerCase()} </p>
           <p>Số lượng: {props.content.number}</p>
           {
+    // (props.content.print || props.content.embroider) ? (
+    //     <p>Bao gồm: 
+    //         {props.content.print ? props.content.print.split(',')[0] : ""} 
+    //         {props.content.print && props.content.embroider ? ", " : ""}
+    //         {props.content.embroider ?  props.content.embroider .split(' ')[0] : ""}
+    //     </p>
+    // ) : (
+    //     <p></p>
+    // )
     (props.content.print || props.content.embroider) ? (
-        <p>Bao gồm: 
-            {props.content.print ? props.content.print.split(',')[0] : ""} 
-            {props.content.print && props.content.embroider ? ", " : ""}
-            {props.content.embroider ?  props.content.embroider .split(' ')[0] : ""}
-        </p>
+      <p>
+        Bao gồm:{" "}
+        {props.content.print ? " In Logo" : ""} 
+        {props.content.print && props.content.embroider ? " và " : ""}
+        {props.content.embroider ? "Thêu Logo" : ""}
+        
+      </p>
     ) : (
-        <p></p>
+      <p></p>
     )
 }
 
